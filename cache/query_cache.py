@@ -6,6 +6,8 @@ Implements similarity-based caching with learning patterns
 import hashlib
 import logging
 import time
+import json
+import os
 from typing import Dict, Any, Optional, List, Tuple
 from difflib import SequenceMatcher
 from .redis_manager import RedisManager
@@ -262,4 +264,104 @@ class QueryCache:
             
         except Exception as e:
             logger.error(f"Error clearing cache: {str(e)}")
+            return False
+    
+    def _get_cache_backup_path(self) -> str:
+        """Get path for cache backup file"""
+        backup_dir = "vector_stores/backups"
+        os.makedirs(backup_dir, exist_ok=True)
+        return os.path.join(backup_dir, "query_cache_backup.json")
+    
+    def backup_cache_to_file(self) -> bool:
+        """Backup critical cache entries to file"""
+        try:
+            backup_data = {
+                "timestamp": time.time(),
+                "created_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "version": "1.0",
+                "queries": {},
+                "stats": {},
+                "total_entries": 0
+            }
+            
+            # Backup recent popular queries (last 100)
+            patterns = [f"{self.QUERY_PREFIX}*"]
+            
+            for pattern in patterns:
+                keys = self.redis.get_keys_pattern(pattern)[:100]  # Limit to avoid huge files
+                for key in keys:
+                    try:
+                        value = self.redis.get(key)
+                        if value:
+                            # Extract agent type and query hash from key
+                            key_parts = key.replace(self.QUERY_PREFIX, "").split(":")
+                            if len(key_parts) >= 2:
+                                agent_type = key_parts[0]
+                                query_hash = key_parts[1]
+                                
+                                backup_data["queries"][key] = {
+                                    "agent_type": agent_type,
+                                    "response": value.get("response", ""),
+                                    "cached_at": value.get("cached_at", time.time()),
+                                    "hit_count": value.get("hit_count", 0),
+                                    "query_hash": query_hash
+                                }
+                                backup_data["total_entries"] += 1
+                    except Exception as e:
+                        logger.warning(f"Could not backup cache entry {key}: {e}")
+            
+            # Save to file
+            backup_file = self._get_cache_backup_path()
+            with open(backup_file, 'w', encoding='utf-8') as f:
+                json.dump(backup_data, f, indent=2, ensure_ascii=False)
+            
+            logger.info(f"Cache backup saved: {backup_data['total_entries']} entries to {backup_file}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error backing up cache: {e}")
+            return False
+    
+    def restore_cache_from_file(self) -> bool:
+        """Restore cache entries from backup file"""
+        try:
+            backup_file = self._get_cache_backup_path()
+            if not os.path.exists(backup_file):
+                logger.info("No cache backup file found")
+                return False
+            
+            with open(backup_file, 'r', encoding='utf-8') as f:
+                backup_data = json.load(f)
+            
+            # Check if backup is not too old (7 days)
+            backup_timestamp = backup_data.get("timestamp", 0)
+            if time.time() - backup_timestamp > 7 * 24 * 3600:
+                logger.info("Cache backup too old, skipping restore")
+                return False
+            
+            restored_count = 0
+            queries = backup_data.get("queries", {})
+            
+            for cache_key, entry_data in queries.items():
+                try:
+                    # Restore with shorter TTL since it's from backup
+                    backup_ttl = min(self.default_ttl // 2, 1800)  # Max 30 minutes
+                    
+                    cache_value = {
+                        "response": entry_data.get("response", ""),
+                        "cached_at": time.time(),  # Update timestamp
+                        "hit_count": entry_data.get("hit_count", 0),
+                        "restored_from_backup": True
+                    }
+                    
+                    if self.redis.set(cache_key, cache_value, ttl=backup_ttl):
+                        restored_count += 1
+                except Exception as e:
+                    logger.warning(f"Could not restore cache entry {cache_key}: {e}")
+            
+            logger.info(f"Restored {restored_count} cache entries from backup")
+            return restored_count > 0
+            
+        except Exception as e:
+            logger.error(f"Error restoring cache from backup: {e}")
             return False

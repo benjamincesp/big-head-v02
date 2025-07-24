@@ -1,0 +1,86 @@
+{
+  "timestamp": 1753392925.2734475,
+  "created_at": "2025-07-24 21:35:25",
+  "version": "1.0",
+  "queries": {
+    "fs2024:query:exhibitors:2925b2eec3674a37c194ce702c94985c": {
+      "agent_type": "exhibitors",
+      "response": "📊 **Estadísticas de Expositores:**\n\n- **Total de Expositores:** 1\n- **Con Información de Stand:** 0\n- **Sin Información de Stand:** 1\n\n📄 **Distribución por Documento:**\n- Manual del Expositor Espacio Food & Service 2025.pdf: 1\n\n🔍 **Consulta Original:** Stands Asignados",
+      "cached_at": 1753392749.3949268,
+      "hit_count": 0,
+      "query_hash": "2925b2eec3674a37c194ce702c94985c"
+    },
+    "fs2024:query:general:203b8940263ce940619d9e31a418ce97": {
+      "agent_type": "general",
+      "response": "📋 No se encontró información relevante en los documentos generales.",
+      "cached_at": 1753391899.919721,
+      "hit_count": 0,
+      "query_hash": "203b8940263ce940619d9e31a418ce97"
+    },
+    "fs2024:query:visitors:525e09c2aed151f733fcec7a047ba63e": {
+      "agent_type": "visitors",
+      "response": "👥 No se encontraron datos específicos de visitantes para esta consulta.",
+      "cached_at": 1753391906.561931,
+      "hit_count": 0,
+      "query_hash": "525e09c2aed151f733fcec7a047ba63e"
+    },
+    "fs2024:query:general:d8e925a34cf916e2cf0a3d9c1b3a601c": {
+      "agent_type": "general",
+      "response": "El plano general del evento Food & Service 2025 incluye dos documentos clave: un PDF y un archivo Excel. 📄 El PDF titulado \"Plano General Espacio Food & Service 2025(V37 - 6 julio 25)\" tiene un tamaño de 2,37 MB, mientras que el archivo Excel \"Plano General Espacio Food & Service 2025(23-07-2025)\" es más ligero, con un tamaño de 396,675 bytes. 📊\n\nEstos documentos contienen información esencial sobre la distribución del espacio, áreas de exhibición, y otros detalles logísticos que son cruciales para la planificación y ejecución del evento. Asegúrate de revisarlos para obtener una comprensión completa del diseño y la organización del evento. 🗺️\n\nSi necesitas más detalles específicos o asistencia adicional, no dudes en preguntar. ¡Estamos aquí para ayudarte! 😊",
+      "cached_at": 1753391924.535747,
+      "hit_count": 0,
+      "query_hash": "d8e925a34cf916e2cf0a3d9c1b3a601c"
+    },
+    "fs2024:query:exhibitors:636c4f6aec06ddbcee77021197afa8f7": {
+      "agent_type": "exhibitors",
+      "response": "🏢 **Empresas Expositoras Encontradas:**\n- Inicio de montaje expositores\n\n📊 **Estadísticas de Expositores:**\n- Total de expositores: **1**\n- Con información de stand: **0**\n- Sin información de stand: **1**\n- Distribución por documento: \n  - 📄 **Manual del Expositor Espacio Food & Service 2025.pdf**: **1**\n\n🔍 **Consulta Original:** ¿Cuántas empresas expositoras hay?",
+      "cached_at": 1753392759.068413,
+      "hit_count": 0,
+      "query_hash": "636c4f6aec06ddbcee77021197afa8f7"
+    },
+    "fs2024:query:general:fbc5af1d384975456a576d844e8c99ef": {
+      "agent_type": "general",
+      "response": "📋 No se encontró información relevante en los documentos generales.",
+      "cached_at": 1753391916.5929172,
+      "hit_count": 0,
+      "query_hash": "fbc5af1d384975456a576d844e8c99ef"
+    },
+    "fs2024:query:general:a07e7dd0c2712772647530f0f9c1f3d4": {
+      "agent_type": "general",
+      "response": "📋 No se encontró información relevante en los documentos generales.",
+      "cached_at": 1753391931.612792,
+      "hit_count": 0,
+      "query_hash": "a07e7dd0c2712772647530f0f9c1f3d4"
+    },
+    "fs2024:query:general:972aef24f84cdc004059caed88e5abd8": {
+      "agent_type": "general",
+      "response": "El evento Food Service 2025 se llevará a cabo el 23 de julio de 2025. 🗓️ Este evento es una excelente oportunidad para explorar las últimas tendencias y productos en la industria de la alimentación y el servicio. \n\nAsegúrate de marcar la fecha en tu calendario y prepárate para disfrutar de una experiencia enriquecedora llena de networking y aprendizaje. 🍽️✨ \n\nSi necesitas más información sobre el evento, no dudes en preguntar. ¡Nos vemos allí! 👋",
+      "cached_at": 1753391897.3802304,
+      "hit_count": 0,
+      "query_hash": "972aef24f84cdc004059caed88e5abd8"
+    },
+    "fs2024:query:exhibitors:5f2e63116180013135821f5a346c2588": {
+      "agent_type": "exhibitors",
+      "response": "🏢 **Empresas Expositoras Encontradas:**\n- Inicio de montaje expositores\n\n📊 **Estadísticas de Expositores:**\n- Total de expositores: **1**\n- Con información de stand: **0**\n- Sin información de stand: **1**\n- Distribución por documento: \n  - 📄 **Manual del Expositor Espacio Food & Service 2025.pdf**: **1** \n\n🔍 **Consulta Original:** Nombres de empresas participantes",
+      "cached_at": 1753392743.347753,
+      "hit_count": 0,
+      "query_hash": "5f2e63116180013135821f5a346c2588"
+    },
+    "fs2024:query:general:4d186321c1a7f0f354b297e8914ab240": {
+      "agent_type": "general",
+      "response": "📋 No se encontró información relevante en los documentos generales.",
+      "cached_at": 1753391841.208066,
+      "hit_count": 0,
+      "query_hash": "4d186321c1a7f0f354b297e8914ab240"
+    },
+    "fs2024:query:general:317327b8d9c40797c14070da80f1a50d": {
+      "agent_type": "general",
+      "response": "Food Service 2025 es un evento dedicado a la industria de la alimentación y servicios relacionados, que busca conectar a profesionales, proveedores y consumidores en un espacio de innovación y tendencias. 🍽️ Este evento se enfoca en las nuevas tecnologías, sostenibilidad y las últimas tendencias en gastronomía, ofreciendo una plataforma para el intercambio de ideas y la creación de redes.\n\nEl evento incluye exposiciones, conferencias y talleres, donde los asistentes pueden aprender sobre las mejores prácticas y descubrir productos innovadores que están transformando el sector. 🌱 Además, se promueve el desarrollo de soluciones que aborden los desafíos actuales en la industria alimentaria.\n\nEn resumen, Food Service 2025 es una oportunidad única para que los actores del sector se reúnan, aprendan y colaboren en un entorno dinámico y en constante evolución. ¡No te lo pierdas! 🎉",
+      "cached_at": 1753391983.38989,
+      "hit_count": 0,
+      "query_hash": "317327b8d9c40797c14070da80f1a50d"
+    }
+  },
+  "stats": {},
+  "total_entries": 11
+}

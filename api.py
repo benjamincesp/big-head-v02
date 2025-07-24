@@ -41,10 +41,14 @@ app.add_middleware(
 )
 
 # Initialize orchestrator
+print("🔧 DEBUG: Starting API initialization...")
 openai_api_key = os.getenv('OPENAI_API_KEY')
 if not openai_api_key:
+    print("❌ DEBUG: OPENAI_API_KEY not found")
     logger.error("OPENAI_API_KEY environment variable not set")
     raise ValueError("OPENAI_API_KEY environment variable is required")
+
+print("✅ DEBUG: OPENAI_API_KEY found")
 
 redis_config = {
     'host': os.getenv('REDIS_HOST', 'localhost'),
@@ -53,7 +57,9 @@ redis_config = {
     'db': int(os.getenv('REDIS_DB', 0))
 }
 
+print(f"🔧 DEBUG: Creating orchestrator with Redis config: {redis_config}")
 orchestrator = FoodServiceOrchestrator(openai_api_key, redis_config)
+print("✅ DEBUG: Orchestrator created successfully!")
 
 # Pydantic models
 class QueryRequest(BaseModel):
@@ -65,6 +71,59 @@ class QueryResponse(BaseModel):
     response: str
 
 # API Endpoints
+
+@app.get("/food-service/health")
+async def health_check():
+    """Health check endpoint for Docker healthcheck"""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "service": "Food Service 2025 Multi-Agent API"
+    }
+
+@app.post("/food-service/admin/backup")
+async def create_backup():
+    """Create backup of cache and document state"""
+    try:
+        backup_results = {
+            "timestamp": datetime.now().isoformat(),
+            "cache_backup": False,
+            "document_backups": {}
+        }
+        
+        # Backup cache
+        try:
+            backup_results["cache_backup"] = orchestrator.query_cache.backup_cache_to_file()
+        except Exception as e:
+            logger.error(f"Cache backup failed: {e}")
+        
+        # Backup document states for each agent
+        for agent_name, agent in orchestrator.agents.items():
+            try:
+                if hasattr(agent, 'document_search'):
+                    agent.document_search._save_backup_state()
+                    backup_results["document_backups"][agent_name] = True
+                elif hasattr(agent, 'exhibitor_tool'):
+                    agent.exhibitor_tool._save_backup_state()
+                    backup_results["document_backups"][agent_name] = True
+                elif hasattr(agent, 'visitor_tool'):
+                    agent.visitor_tool._save_backup_state()
+                    backup_results["document_backups"][agent_name] = True
+                else:
+                    backup_results["document_backups"][agent_name] = False
+            except Exception as e:
+                logger.error(f"Document backup failed for {agent_name}: {e}")
+                backup_results["document_backups"][agent_name] = False
+        
+        return {
+            "status": "success",
+            "message": "Backup process completed",
+            "results": backup_results
+        }
+        
+    except Exception as e:
+        logger.error(f"Backup creation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Backup failed: {str(e)}")
 
 @app.post("/query", response_model=QueryResponse)
 async def process_query(request: QueryRequest):
@@ -143,8 +202,10 @@ async def shutdown_event():
 if __name__ == "__main__":
     import uvicorn
     
+    print("🚀 DEBUG: Starting uvicorn server...")
     port = int(os.getenv('PORT', 8000))
     host = os.getenv('HOST', '0.0.0.0')
+    print(f"🌐 DEBUG: Server will run on {host}:{port}")
     
     uvicorn.run(
         "api:app",

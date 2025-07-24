@@ -12,9 +12,13 @@ logger = logging.getLogger(__name__)
 
 class ExhibitorsAgent:
     def __init__(self, openai_api_key: str):
+        print("🏢 DEBUG: ExhibitorsAgent - Setting up OpenAI client...")
         self.openai_client = openai.OpenAI(api_key=openai_api_key)
+        print("🏢 DEBUG: ExhibitorsAgent - Initializing exhibitor tool for 'folders/exhibitors'...")
         self.exhibitor_tool = ExhibitorQueryTool("folders/exhibitors")
+        print("🏢 DEBUG: ExhibitorsAgent - Exhibitor tool initialized")
         self.agent_type = "exhibitors"
+        print("✅ DEBUG: ExhibitorsAgent initialization complete")
         
     def process_query(self, query: str) -> Dict[str, Any]:
         """

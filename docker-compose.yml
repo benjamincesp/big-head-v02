@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   # Redis Cache Service
@@ -44,11 +44,14 @@ services:
       
       # Logging
       - LOG_LEVEL=INFO
+      
+      # Vector store configuration (temporarily disable to fix startup issues)
+      - DISABLE_VECTOR_STORE=true
     volumes:
       # Mount document folders
       - ./folders:/app/folders:ro
-      # Mount vector stores for persistence
-      - vector_data:/app/vector_stores
+      # Mount vector stores for persistence (using bind mount for better persistence)
+      - ./vector_stores:/app/vector_stores
     depends_on:
       redis:
         condition: service_healthy

@@ -12,9 +12,13 @@ logger = logging.getLogger(__name__)
 
 class GeneralAgent:
     def __init__(self, openai_api_key: str):
+        print("📄 DEBUG: GeneralAgent - Setting up OpenAI client...")
         self.openai_client = openai.OpenAI(api_key=openai_api_key)
+        print("📄 DEBUG: GeneralAgent - Initializing document search for 'folders/general'...")
         self.document_search = DocumentSearchTool("folders/general")
+        print("📄 DEBUG: GeneralAgent - Document search initialized")
         self.agent_type = "general"
+        print("✅ DEBUG: GeneralAgent initialization complete")
         
     def process_query(self, query: str) -> Dict[str, Any]:
         """

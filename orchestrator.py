@@ -20,19 +20,43 @@ class FoodServiceOrchestrator:
             openai_api_key: OpenAI API key
             redis_config: Redis configuration parameters
         """
+        print("🔧 DEBUG: Initializing orchestrator...")
         self.openai_api_key = openai_api_key
         
         # Initialize Redis and cache
+        print("🔧 DEBUG: Setting up Redis connection...")
         redis_config = redis_config or {}
         self.redis_manager = RedisManager(**redis_config)
         self.query_cache = QueryCache(self.redis_manager)
+        print("✅ DEBUG: Redis and cache initialized")
         
         # Initialize agents
+        print("🔧 DEBUG: Creating agents...")
+        print("🔧 DEBUG: Creating GeneralAgent...")
         self.agents = {
             'general': GeneralAgent(openai_api_key),
-            'exhibitors': ExhibitorsAgent(openai_api_key),
-            'visitors': VisitorsAgent(openai_api_key)
         }
+        print("✅ DEBUG: GeneralAgent created")
+        
+        print("🔧 DEBUG: Creating ExhibitorsAgent...")
+        self.agents['exhibitors'] = ExhibitorsAgent(openai_api_key)
+        print("✅ DEBUG: ExhibitorsAgent created")
+        
+        print("🔧 DEBUG: Creating VisitorsAgent...")
+        self.agents['visitors'] = VisitorsAgent(openai_api_key)
+        print("✅ DEBUG: VisitorsAgent created")
+        
+        print("✅ DEBUG: All agents initialized!")
+        
+        # Try to restore cache from backup if Redis is empty
+        print("🔄 DEBUG: Checking cache backup...")
+        if self.query_cache.get_cache_stats().get("total_entries", 0) == 0:
+            if self.query_cache.restore_cache_from_file():
+                print("✅ DEBUG: Cache restored from backup")
+            else:
+                print("ℹ️ DEBUG: No cache backup to restore")
+        else:
+            print("ℹ️ DEBUG: Cache already populated, skipping backup restore")
         
         # Agent detection keywords
         self.agent_keywords = {

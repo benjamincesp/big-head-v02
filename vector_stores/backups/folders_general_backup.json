@@ -1,0 +1,37 @@
+{
+  "timestamp": 1753392925.2992492,
+  "folder_path": "folders/general",
+  "folder_hash": "5dda8bb2321d0ba1093af1c17afbeeea",
+  "indexed_documents": {
+    "Plano General Espacio Food & Service 2025(V37 - 6 julio 25).pdf": {
+      "path": "folders/general/Plano General Espacio Food & Service 2025(V37 - 6 julio 25).pdf",
+      "size": 2371336,
+      "type": "pdf",
+      "content_preview": "[BACKUP RESTORE] Document: Plano General Espacio Food & Service 2025(V37 - 6 julio 25).pdf (Size: 2371336 bytes)",
+      "content_length": 112,
+      "indexed_at": "2025-07-24 21:35:25"
+    },
+    "Plano General Espacio Food & Service 2025(23-07-2025).xlsx": {
+      "path": "folders/general/Plano General Espacio Food & Service 2025(23-07-2025).xlsx",
+      "size": 396675,
+      "type": "excel",
+      "content_preview": "[BACKUP RESTORE] Document: Plano General Espacio Food & Service 2025(23-07-2025).xlsx (Size: 396675 bytes)",
+      "content_length": 106,
+      "indexed_at": "2025-07-24 21:35:25"
+    },
+    "Brochure Espacio Food & Service 2025.pdf": {
+      "path": "folders/general/Brochure Espacio Food & Service 2025.pdf",
+      "size": 4422385,
+      "type": "pdf",
+      "content_preview": "[BACKUP RESTORE] Document: Brochure Espacio Food & Service 2025.pdf (Size: 4422385 bytes)",
+      "content_length": 89,
+      "indexed_at": "2025-07-24 21:35:25"
+    }
+  },
+  "total_documents": 3,
+  "vector_store_enabled": false,
+  "metadata": {
+    "created_at": "2025-07-24 21:35:25",
+    "version": "1.0"
+  }
+}

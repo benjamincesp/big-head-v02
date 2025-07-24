@@ -12,9 +12,13 @@ logger = logging.getLogger(__name__)
 
 class VisitorsAgent:
     def __init__(self, openai_api_key: str):
+        print("👥 DEBUG: VisitorsAgent - Setting up OpenAI client...")
         self.openai_client = openai.OpenAI(api_key=openai_api_key)
+        print("👥 DEBUG: VisitorsAgent - Initializing visitor tool for 'folders/visitors'...")
         self.visitor_tool = VisitorQueryTool("folders/visitors")
+        print("👥 DEBUG: VisitorsAgent - Visitor tool initialized")
         self.agent_type = "visitors"
+        print("✅ DEBUG: VisitorsAgent initialization complete")
         
     def process_query(self, query: str) -> Dict[str, Any]:
         """
