@@ -1,0 +1,42 @@
+# Food Service 2025 Multi-Agent System Requirements
+
+# Core AI and Machine Learning
+openai==1.54.3
+
+# Web Framework and API
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# Redis and Caching
+redis==5.0.1
+
+# Document Processing
+PyPDF2==3.0.1
+pandas==2.1.4
+openpyxl==3.1.2
+xlrd==2.0.1
+
+# HTTP and Data Processing
+requests==2.31.0
+
+# Logging and Monitoring
+python-multipart==0.0.6
+
+# Environment and Configuration
+python-dotenv==1.0.0
+
+# Text Processing (difflib is built-in)
+
+# Development and Testing (optional)
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2
+
+# Vector Store and Embeddings
+faiss-cpu==1.8.0
+sentence-transformers==3.3.1
+numpy==1.26.4
+
+# Additional utilities
+python-dateutil==2.8.2

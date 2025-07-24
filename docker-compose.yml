@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # Redis Cache Service
+  redis:
+    image: redis:7-alpine
+    container_name: fs2024_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - food_service_network
+
+  # Food Service 2025 Multi-Agent API
+  food_service_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fs2024_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # OpenAI Configuration
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Redis Configuration
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      
+      # API Configuration
+      - HOST=0.0.0.0
+      - PORT=8000
+      - ENVIRONMENT=production
+      
+      # Logging
+      - LOG_LEVEL=INFO
+    volumes:
+      # Mount document folders
+      - ./folders:/app/folders:ro
+      # Mount vector stores for persistence
+      - vector_data:/app/vector_stores
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/food-service/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - food_service_network
+
+  # Optional: Redis Commander for Redis management
+  redis_commander:
+    image: rediscommander/redis-commander:latest
+    container_name: fs2024_redis_commander
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    depends_on:
+      - redis
+    networks:
+      - food_service_network
+    profiles:
+      - admin
+
+volumes:
+  redis_data:
+    driver: local
+  vector_data:
+    driver: local
+
+networks:
+  food_service_network:
+    driver: bridge
