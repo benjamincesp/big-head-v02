@@ -21,85 +21,96 @@ class ExhibitorsAgent:
             print(f"❌ DEBUG: ExhibitorsAgent - OpenAI client failed: {str(e)}")
             raise AgentError(f"Failed to initialize OpenAI client: {str(e)}")
         
-        print("🏢 DEBUG: ExhibitorsAgent - Initializing exhibitor tool for 'folders/exhibitors'...")
+        print("🏢 DEBUG: ExhibitorsAgent - Initializing intelligent search for 'folders/exhibitors'...")
         try:
+            from tools.intelligent_search import IntelligentSearchSystem
+            self.intelligent_search = IntelligentSearchSystem("folders/exhibitors")
+            # Keep the original tool as backup
             self.exhibitor_tool = ExhibitorQueryTool("folders/exhibitors")
-            print("🏢 DEBUG: ExhibitorsAgent - Exhibitor tool initialized")
+            print("🏢 DEBUG: ExhibitorsAgent - Intelligent search and exhibitor tool initialized")
         except Exception as e:
-            print(f"❌ DEBUG: ExhibitorsAgent - Exhibitor tool failed: {str(e)}")
-            raise AgentError(f"Failed to initialize exhibitor tool: {str(e)}")
+            print(f"❌ DEBUG: ExhibitorsAgent - Initialization failed: {str(e)}")
+            raise AgentError(f"Failed to initialize exhibitors agent: {str(e)}")
         
         self.agent_type = "exhibitors"
         print("✅ DEBUG: ExhibitorsAgent initialization complete")
         
     def process_query(self, query: str) -> Dict[str, Any]:
         """
-        Process exhibitor-specific queries
-        Returns only exact data, never invents information
+        Process exhibitor-specific queries with intelligent search
         """
         try:
-            # Extract exhibitor data based on query
-            exhibitor_data = self.exhibitor_tool.extract_exhibitor_info(query)
+            # Use intelligent search that ALWAYS finds relevant content
+            search_results = self.intelligent_search.search(query, max_results=4)
             
-            if not exhibitor_data["companies"] and not exhibitor_data["stats"]:
-                return {
-                    "agent": self.agent_type,
-                    "response": "🏢 No se encontraron datos específicos de expositores para esta consulta.",
-                    "data": exhibitor_data,
-                    "success": True
-                }
+            # Also try the original exhibitor tool for specific data extraction
+            try:
+                exhibitor_data = self.exhibitor_tool.extract_exhibitor_info(query)
+            except:
+                exhibitor_data = {"companies": [], "stats": {}}
             
-            # Format response with exact data
-            response_parts = []
+            # Prepare enhanced context from intelligent search
+            context_parts = []
+            sources = []
             
+            for i, result in enumerate(search_results[:3]):
+                context_parts.append(f"""
+                Fuente {i+1}: {result.get('file', 'Documento de Expositores')}
+                Contenido: {result['content']}
+                """)
+                sources.append(result.get('file', 'Documento'))
+            
+            # Add any structured data found
             if exhibitor_data["companies"]:
-                response_parts.append("🏢 **Empresas expositoras encontradas:**")
-                for company in exhibitor_data["companies"][:10]:  # Limit to 10
-                    stand_info = f" (Stand: {company['stand']})" if company.get('stand') else ""
-                    response_parts.append(f"• {company['name']}{stand_info}")
+                companies_text = "\\n".join([f"• {company['name']}" + (f" (Stand: {company['stand']})" if company.get('stand') else "") 
+                                          for company in exhibitor_data["companies"][:5]])
+                context_parts.append(f"\\nEmpresas encontradas:\\n{companies_text}")
             
-            if exhibitor_data["stats"]:
-                response_parts.append("\n📊 **Estadísticas de expositores:**")
-                for stat_key, stat_value in exhibitor_data["stats"].items():
-                    response_parts.append(f"• {stat_key}: {stat_value}")
+            context = "\\n".join(context_parts)
             
-            # Use GPT only for formatting and structure, not for inventing data
-            if response_parts:
-                formatted_response = "\n".join(response_parts)
-                
-                prompt = f"""
-                Formatea la siguiente información de expositores de Food Service 2025.
-                NO agregues información que no esté presente.
-                NO inventes datos.
-                Solo mejora la presentación y añade emojis apropiados.
-                
-                Información:
-                {formatted_response}
-                
-                Consulta original: {query}
-                """
-                
-                messages = [
-                    {"role": "system", "content": "Eres un formateador de datos. Solo mejora la presentación sin agregar información nueva."},
-                    {"role": "user", "content": prompt}
-                ]
-                
-                gpt_response = self.openai_client.chat_completion(
-                    messages=messages,
-                    model="gpt-4o-mini",
-                    max_tokens=400,
-                    temperature=0.1
-                )
-                
-                final_response = gpt_response["content"]
-            else:
-                final_response = "🏢 No se encontraron datos específicos de expositores."
+            prompt = f"""
+            Eres un experto en Food Service 2025 especializado en información de EXPOSITORES y EMPRESAS.
+            
+            IMPORTANTE: Proporciona SIEMPRE una respuesta útil e informativa sobre expositores.
+            
+            Instrucciones:
+            1. Enfócate en información de empresas, expositores, stands, y participantes comerciales
+            2. Usa la información proporcionada como base principal
+            3. Mantén la respuesta entre 2-4 párrafos
+            4. Incluye emojis apropiados (🏢, 🏪, 📊, 🌟)
+            5. Si encuentras empresas específicas, menciónalas
+            6. Si la información es limitada, proporciona contexto general sobre expositores del evento
+            
+            Consulta del usuario: {query}
+            
+            Información disponible sobre expositores:
+            {context}
+            
+            Proporciona una respuesta completa sobre expositores:
+            """
+            
+            messages = [
+                {"role": "system", "content": "Eres un especialista en Food Service 2025 enfocado en expositores y empresas participantes. SIEMPRE proporcionas información útil sobre el aspecto comercial del evento."},
+                {"role": "user", "content": prompt}
+            ]
+            
+            # Use robust OpenAI client
+            response_data = self.openai_client.chat_completion(
+                messages=messages,
+                model="gpt-4o-mini",
+                max_tokens=600,
+                temperature=0.4
+            )
             
             return {
                 "agent": self.agent_type,
-                "response": final_response,
-                "data": exhibitor_data,
-                "success": True
+                "response": response_data["content"],
+                "sources": sources,
+                "success": True,
+                "openai_usage": response_data["usage"],
+                "processing_time": response_data["duration_seconds"],
+                "search_results_count": len(search_results),
+                "data": exhibitor_data
             }
             
         except OpenAIError as e:
@@ -132,8 +143,9 @@ class ExhibitorsAgent:
             }
     
     def refresh_data(self) -> Dict[str, Any]:
-        """Refresh the exhibitor data index"""
+        """Refresh the intelligent search and exhibitor data index"""
         try:
+            self.intelligent_search.refresh_index()
             self.exhibitor_tool.refresh_index()
             return {
                 "agent": self.agent_type,

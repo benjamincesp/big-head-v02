@@ -21,93 +21,99 @@ class VisitorsAgent:
             print(f"❌ DEBUG: VisitorsAgent - OpenAI client failed: {str(e)}")
             raise AgentError(f"Failed to initialize OpenAI client: {str(e)}")
         
-        print("👥 DEBUG: VisitorsAgent - Initializing visitor tool for 'folders/visitors'...")
+        print("👥 DEBUG: VisitorsAgent - Initializing intelligent search for 'folders/visitors'...")
         try:
+            from tools.intelligent_search import IntelligentSearchSystem
+            self.intelligent_search = IntelligentSearchSystem("folders/visitors")
+            # Keep the original tool as backup
             self.visitor_tool = VisitorQueryTool("folders/visitors")
-            print("👥 DEBUG: VisitorsAgent - Visitor tool initialized")
+            print("👥 DEBUG: VisitorsAgent - Intelligent search and visitor tool initialized")
         except Exception as e:
-            print(f"❌ DEBUG: VisitorsAgent - Visitor tool failed: {str(e)}")
-            raise AgentError(f"Failed to initialize visitor tool: {str(e)}")
+            print(f"❌ DEBUG: VisitorsAgent - Initialization failed: {str(e)}")
+            raise AgentError(f"Failed to initialize visitors agent: {str(e)}")
         
         self.agent_type = "visitors"
         print("✅ DEBUG: VisitorsAgent initialization complete")
         
     def process_query(self, query: str) -> Dict[str, Any]:
         """
-        Process visitor-specific queries
-        Returns only exact data, never invents information
+        Process visitor-specific queries with intelligent search
         """
         try:
-            # Extract visitor data based on query
-            visitor_data = self.visitor_tool.extract_visitor_info(query)
+            # Use intelligent search that ALWAYS finds relevant content
+            search_results = self.intelligent_search.search(query, max_results=4)
             
-            if not any([visitor_data["daily_stats"], visitor_data["demographics"], 
-                       visitor_data["total_visitors"], visitor_data["trends"]]):
-                return {
-                    "agent": self.agent_type,
-                    "response": "👥 No se encontraron datos específicos de visitantes para esta consulta.",
-                    "data": visitor_data,
-                    "success": True
-                }
+            # Also try the original visitor tool for specific data extraction
+            try:
+                visitor_data = self.visitor_tool.extract_visitor_info(query)
+            except:
+                visitor_data = {"daily_stats": {}, "demographics": {}, "total_visitors": None, "trends": []}
             
-            # Format response with exact data
-            response_parts = []
+            # Prepare enhanced context from intelligent search
+            context_parts = []
+            sources = []
             
+            for i, result in enumerate(search_results[:3]):
+                context_parts.append(f"""
+                Fuente {i+1}: {result.get('file', 'Documento de Visitantes')}
+                Contenido: {result['content']}
+                """)
+                sources.append(result.get('file', 'Documento'))
+            
+            # Add any structured data found
             if visitor_data["total_visitors"]:
-                response_parts.append(f"👥 **Total de visitantes:** {visitor_data['total_visitors']}")
-            
-            if visitor_data["daily_stats"]:
-                response_parts.append("\n📅 **Estadísticas por día:**")
-                for day, count in visitor_data["daily_stats"].items():
-                    response_parts.append(f"• {day}: {count} visitantes")
+                context_parts.append(f"\\nTotal de visitantes: {visitor_data['total_visitors']}")
             
             if visitor_data["demographics"]:
-                response_parts.append("\n📊 **Demografía de visitantes:**")
-                for demo_key, demo_value in visitor_data["demographics"].items():
-                    response_parts.append(f"• {demo_key}: {demo_value}")
+                demo_text = "\\n".join([f"• {key}: {value}" for key, value in visitor_data["demographics"].items()])
+                context_parts.append(f"\\nDemografía encontrada:\\n{demo_text}")
             
-            if visitor_data["trends"]:
-                response_parts.append("\n📈 **Tendencias:**")
-                for trend in visitor_data["trends"]:
-                    response_parts.append(f"• {trend}")
+            context = "\\n".join(context_parts)
             
-            # Use GPT only for formatting, not for inventing data
-            if response_parts:
-                formatted_response = "\n".join(response_parts)
-                
-                prompt = f"""
-                Formatea la siguiente información de visitantes de Food Service 2025.
-                NO agregues información que no esté presente.
-                NO inventes números o datos.
-                Solo mejora la presentación y añade emojis apropiados.
-                
-                Información:
-                {formatted_response}
-                
-                Consulta original: {query}
-                """
-                
-                messages = [
-                    {"role": "system", "content": "Eres un formateador de datos. Solo mejora la presentación sin agregar información nueva."},
-                    {"role": "user", "content": prompt}
-                ]
-                
-                gpt_response = self.openai_client.chat_completion(
-                    messages=messages,
-                    model="gpt-4o-mini",
-                    max_tokens=400,
-                    temperature=0.1
-                )
-                
-                final_response = gpt_response["content"]
-            else:
-                final_response = "👥 No se encontraron datos específicos de visitantes."
+            prompt = f"""
+            Eres un experto en Food Service 2025 especializado en información de VISITANTES y ASISTENCIA.
+            
+            IMPORTANTE: Proporciona SIEMPRE una respuesta útil e informativa sobre visitantes.
+            
+            Instrucciones:
+            1. Enfócate en información de visitantes, asistencia, demografía, y estadísticas de público
+            2. Usa la información proporcionada como base principal
+            3. Mantén la respuesta entre 2-4 párrafos
+            4. Incluye emojis apropiados (👥, 📊, 📈, 🎯)
+            5. Si encuentras números específicos de asistencia, menciónalos
+            6. Si la información es limitada, proporciona contexto general sobre el perfil de visitantes del evento
+            7. Habla sobre el tipo de profesionales que asisten, sectores representados, etc.
+            
+            Consulta del usuario: {query}
+            
+            Información disponible sobre visitantes:
+            {context}
+            
+            Proporciona una respuesta completa sobre visitantes:
+            """
+            
+            messages = [
+                {"role": "system", "content": "Eres un especialista en Food Service 2025 enfocado en visitantes y estadísticas de asistencia. SIEMPRE proporcionas información útil sobre el público del evento."},
+                {"role": "user", "content": prompt}
+            ]
+            
+            # Use robust OpenAI client
+            response_data = self.openai_client.chat_completion(
+                messages=messages,
+                model="gpt-4o-mini",
+                max_tokens=600,
+                temperature=0.4
+            )
             
             return {
                 "agent": self.agent_type,
-                "response": final_response,
-                "data": visitor_data,
-                "success": True
+                "response": response_data["content"],
+                "sources": sources,
+                "success": True,
+                "openai_usage": response_data["usage"],
+                "processing_time": response_data["duration_seconds"],
+                "search_results_count": len(search_results),
+                "data": visitor_data
             }
             
         except OpenAIError as e:
@@ -140,8 +146,9 @@ class VisitorsAgent:
             }
     
     def refresh_data(self) -> Dict[str, Any]:
-        """Refresh the visitor data index"""
+        """Refresh the intelligent search and visitor data index"""
         try:
+            self.intelligent_search.refresh_index()
             self.visitor_tool.refresh_index()
             return {
                 "agent": self.agent_type,
