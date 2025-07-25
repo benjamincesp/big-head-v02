@@ -154,12 +154,35 @@ class FoodServiceOrchestrator:
                 'orchestrator_version': '1.0',
                 'agent_used': agent_type,
                 'query_processed_at': self._get_timestamp(),
-                'cache_enabled': use_cache
+                'cache_enabled': use_cache,
+                'cache_action': 'bypassed' if not use_cache else 'used'
             })
             
-            # Cache the result if successful and cache is enabled
-            if use_cache and response.get('success', False):
-                self.query_cache.set(query, response, agent_type)
+            # Cache logic:
+            # 1. If use_cache=True and successful -> cache normally
+            # 2. If use_cache=False and successful -> OVERWRITE cache with new good response
+            if response.get('success', False):
+                # Only cache if response is actually useful (not empty/error responses)
+                response_text = response.get('response', '').strip()
+                is_useful_response = (
+                    response_text and 
+                    len(response_text) > 50 and
+                    '📋 No se encontró información' not in response_text and
+                    'Error al procesar' not in response_text
+                )
+                
+                if is_useful_response:
+                    if use_cache:
+                        # Normal caching - don't overwrite existing entries
+                        cache_success = self.query_cache.set(query, response, agent_type, force_overwrite=False)
+                        response['cache_action'] = 'stored' if cache_success else 'store_failed'
+                    else:
+                        # Force overwrite cache with new good response when use_cache=false
+                        cache_success = self.query_cache.set(query, response, agent_type, force_overwrite=True)
+                        response['cache_action'] = 'overwritten' if cache_success else 'overwrite_failed'
+                        logger.info(f"Cache overwritten for query: {query[:50]}... (use_cache=false)")
+                else:
+                    response['cache_action'] = 'not_cached_poor_quality'
             
             return response
             

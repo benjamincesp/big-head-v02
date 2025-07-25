@@ -129,9 +129,16 @@ class QueryCache:
         logger.info(f"Cache MISS for query: {query[:50]}...")
         return None
     
-    def set(self, query: str, response: Dict[str, Any], agent_type: str = "general", ttl: int = None) -> bool:
+    def set(self, query: str, response: Dict[str, Any], agent_type: str = "general", ttl: int = None, force_overwrite: bool = False) -> bool:
         """
         Cache query response with similarity tracking
+        
+        Args:
+            query: User query
+            response: Response to cache
+            agent_type: Type of agent
+            ttl: Time to live
+            force_overwrite: Force overwrite existing cache entry
         """
         if not self.redis.is_connected():
             return False
@@ -141,15 +148,24 @@ class QueryCache:
         try:
             # Store main cache entry
             cache_key = self._generate_cache_key(query, agent_type)
+            
+            # Check if entry exists and force_overwrite is needed
+            if not force_overwrite and self.redis.exists(cache_key):
+                logger.info(f"Cache entry already exists for query: {query[:50]}... (not overwriting)")
+            
             cache_data = {
                 **response,
                 "cached_at": time.time(),
                 "query": query,
                 "agent_type": agent_type,
-                "ttl": ttl
+                "ttl": ttl,
+                "force_overwritten": force_overwrite
             }
             
             success = self.redis.set(cache_key, cache_data, ex=ttl)
+            
+            if success and force_overwrite:
+                logger.info(f"Cache forcibly overwritten for query: {query[:50]}...")
             
             if success:
                 # Store similarity tracking data

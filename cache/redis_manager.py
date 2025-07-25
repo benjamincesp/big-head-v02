@@ -6,6 +6,7 @@ Handles Redis connections and basic operations
 import redis
 import json
 import logging
+import time
 from typing import Any, Optional, Dict
 import os
 
@@ -17,29 +18,58 @@ class RedisManager:
                  port: int = None, 
                  db: int = 0, 
                  password: str = None,
-                 decode_responses: bool = True):
-        """Initialize Redis connection"""
+                 decode_responses: bool = True,
+                 socket_timeout: int = None,
+                 socket_connect_timeout: int = None,
+                 retry_on_timeout: bool = True,
+                 max_retries: int = 3):
+        """Initialize Redis connection with enhanced configuration"""
         self.host = host or os.getenv('REDIS_HOST', 'localhost')
         self.port = port or int(os.getenv('REDIS_PORT', 6379))
         self.db = db
         self.password = password or os.getenv('REDIS_PASSWORD')
+        self.socket_timeout = socket_timeout or int(os.getenv('REDIS_SOCKET_TIMEOUT', 10))
+        self.socket_connect_timeout = socket_connect_timeout or int(os.getenv('REDIS_CONNECT_TIMEOUT', 5))
+        self.retry_on_timeout = retry_on_timeout
+        self.max_retries = max_retries
         
-        try:
-            self.redis_client = redis.Redis(
-                host=self.host,
-                port=self.port,
-                db=self.db,
-                password=self.password,
-                decode_responses=decode_responses,
-                socket_connect_timeout=5,
-                socket_timeout=5
-            )
-            # Test connection
-            self.redis_client.ping()
-            logger.info(f"Successfully connected to Redis at {self.host}:{self.port}")
-        except Exception as e:
-            logger.error(f"Failed to connect to Redis: {str(e)}")
-            self.redis_client = None
+        self._connect_with_retry()
+    
+    def _connect_with_retry(self):
+        """Connect to Redis with retry logic"""
+        for attempt in range(self.max_retries + 1):
+            try:
+                self.redis_client = redis.Redis(
+                    host=self.host,
+                    port=self.port,
+                    db=self.db,
+                    password=self.password,
+                    decode_responses=True,
+                    socket_connect_timeout=self.socket_connect_timeout,
+                    socket_timeout=self.socket_timeout,
+                    retry_on_timeout=self.retry_on_timeout,
+                    health_check_interval=30
+                )
+                
+                # Test connection
+                self.redis_client.ping()
+                logger.info(f"Successfully connected to Redis at {self.host}:{self.port} (attempt {attempt + 1})")
+                return
+                
+            except redis.ConnectionError as e:
+                if attempt == self.max_retries:
+                    logger.error(f"Failed to connect to Redis after {self.max_retries + 1} attempts: {str(e)}")
+                    self.redis_client = None
+                    return
+                
+                wait_time = 2 ** attempt  # Exponential backoff
+                logger.warning(f"Redis connection attempt {attempt + 1} failed, retrying in {wait_time}s: {str(e)}")
+                time.sleep(wait_time)
+                
+            except Exception as e:
+                logger.error(f"Unexpected Redis connection error: {str(e)}")
+                self.redis_client = None
+                return
     
     def is_connected(self) -> bool:
         """Check if Redis is connected"""

@@ -22,49 +22,61 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Import configuration and exceptions
+from config import config
+from exceptions import *
+
 # Initialize FastAPI app
 app = FastAPI(
     title="Food Service 2025 Multi-Agent API",
     description="Sistema multi-agente para consultas sobre Food Service 2025",
     version="1.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc"
+    docs_url="/docs" if config.is_development() else None,
+    redoc_url="/redoc" if config.is_development() else None
 )
 
-# Configure CORS
+# Configure CORS with security
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=config.ALLOWED_ORIGINS,
+    allow_credentials=config.CORS_ALLOW_CREDENTIALS,
+    allow_methods=["POST", "GET"],
     allow_headers=["*"],
 )
 
-# Initialize orchestrator
+# Initialize orchestrator with configuration
 print("🔧 DEBUG: Starting API initialization...")
-openai_api_key = os.getenv('OPENAI_API_KEY')
-if not openai_api_key:
-    print("❌ DEBUG: OPENAI_API_KEY not found")
-    logger.error("OPENAI_API_KEY environment variable not set")
-    raise ValueError("OPENAI_API_KEY environment variable is required")
+try:
+    print("✅ DEBUG: Configuration loaded and validated")
+    
+    redis_config = config.get_redis_config()
+    print(f"🔧 DEBUG: Creating orchestrator with Redis config: {redis_config}")
+    
+    orchestrator = FoodServiceOrchestrator(config.OPENAI_API_KEY, redis_config)
+    print("✅ DEBUG: Orchestrator created successfully!")
+    
+except ConfigError as e:
+    print(f"❌ DEBUG: Configuration error: {str(e)}")
+    logger.error(f"Configuration error: {str(e)}")
+    raise
+except Exception as e:
+    print(f"❌ DEBUG: Orchestrator initialization failed: {str(e)}")
+    logger.error(f"Orchestrator initialization failed: {str(e)}")
+    raise
 
-print("✅ DEBUG: OPENAI_API_KEY found")
-
-redis_config = {
-    'host': os.getenv('REDIS_HOST', 'localhost'),
-    'port': int(os.getenv('REDIS_PORT', 6379)),
-    'password': os.getenv('REDIS_PASSWORD'),
-    'db': int(os.getenv('REDIS_DB', 0))
-}
-
-print(f"🔧 DEBUG: Creating orchestrator with Redis config: {redis_config}")
-orchestrator = FoodServiceOrchestrator(openai_api_key, redis_config)
-print("✅ DEBUG: Orchestrator created successfully!")
-
-# Pydantic models
+# Pydantic models with validation
 class QueryRequest(BaseModel):
-    query: str = Field(..., description="Consulta del usuario", min_length=1)
-    agent_type: Optional[str] = Field(None, description="Tipo de agente específico (opcional)")
+    query: str = Field(
+        ..., 
+        description="Consulta del usuario", 
+        min_length=1, 
+        max_length=config.MAX_QUERY_LENGTH
+    )
+    agent_type: Optional[str] = Field(
+        None, 
+        description="Tipo de agente específico (opcional)",
+        pattern="^(general|exhibitors|visitors)$"
+    )
     use_cache: bool = Field(True, description="Usar cache para la consulta")
 
 class QueryResponse(BaseModel):

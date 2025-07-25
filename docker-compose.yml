@@ -10,7 +10,7 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    command: redis-server --appendonly yes --maxmemory 1024mb --maxmemory-policy allkeys-lru --tcp-keepalive 60
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 30s
@@ -31,7 +31,7 @@ services:
     environment:
       # OpenAI Configuration
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      
+
       # Redis Configuration
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -45,8 +45,8 @@ services:
       # Logging
       - LOG_LEVEL=INFO
       
-      # Vector store configuration (temporarily disable to fix startup issues)
-      - DISABLE_VECTOR_STORE=true
+      # Vector store configuration
+      - DISABLE_VECTOR_STORE=false
     volumes:
       # Mount document folders
       - ./folders:/app/folders:ro
