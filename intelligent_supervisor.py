@@ -137,6 +137,8 @@ class IntelligentSupervisor:
     def analyze_query_with_ai(self, query: str) -> Dict[str, Any]:
         """Use AI to analyze query intent and context"""
         try:
+            print(f"🧠 DEBUG: Starting AI analysis for query: {query[:50]}...")
+            
             analysis_prompt = f"""
             Analiza la siguiente consulta sobre Food Service 2025 y determina:
             
@@ -157,21 +159,22 @@ class IntelligentSupervisor:
             
             Consulta: "{query}"
             
-            Responde en formato JSON:
+            Responde en formato JSON válido:
             {{
-                "intent": "DATA_EXTRACTION|INFORMATION|COMMERCIAL|DEMOGRAPHIC",
-                "domain": "EXHIBITORS|VISITORS|GENERAL",
-                "keywords": ["palabra1", "palabra2", ...],
+                "intent": "DATA_EXTRACTION",
+                "domain": "EXHIBITORS",
+                "keywords": ["empresas", "expositores"],
                 "confidence": 8,
-                "reasoning": "Explicación breve de por qué esta clasificación"
+                "reasoning": "La consulta pregunta específicamente sobre empresas que participan como expositores"
             }}
             """
             
             messages = [
-                {"role": "system", "content": "Eres un experto analizador de consultas para Food Service 2025. Responde SOLO en formato JSON."},
+                {"role": "system", "content": "Eres un experto analizador de consultas para Food Service 2025. Responde ÚNICAMENTE en formato JSON válido, sin texto adicional."},
                 {"role": "user", "content": analysis_prompt}
             ]
             
+            print("🧠 DEBUG: Sending request to OpenAI...")
             response_data = self.openai_client.chat_completion(
                 messages=messages,
                 model="gpt-4o-mini",
@@ -179,18 +182,45 @@ class IntelligentSupervisor:
                 temperature=0.1
             )
             
+            raw_content = response_data["content"].strip()
+            print(f"🧠 DEBUG: Raw OpenAI response: {raw_content[:200]}...")
+            
+            # Clean the response to ensure it's valid JSON
+            if raw_content.startswith('```json'):
+                raw_content = raw_content.replace('```json', '').replace('```', '').strip()
+            
             import json
-            analysis = json.loads(response_data["content"])
+            analysis = json.loads(raw_content)
+            print(f"🧠 DEBUG: Parsed analysis - Domain: {analysis.get('domain')}, Intent: {analysis.get('intent')}")
+            
+            # Validate required fields
+            required_fields = ['intent', 'domain', 'keywords', 'confidence', 'reasoning']
+            for field in required_fields:
+                if field not in analysis:
+                    print(f"❌ DEBUG: Missing field {field} in AI response")
+                    raise ValueError(f"Missing required field: {field}")
+            
             return analysis
             
-        except Exception as e:
-            logger.error(f"AI analysis failed: {str(e)}")
+        except json.JSONDecodeError as e:
+            logger.error(f"AI analysis JSON decode error: {str(e)}")
+            print(f"❌ DEBUG: Failed to parse JSON: {raw_content if 'raw_content' in locals() else 'No content'}")
             return {
                 "intent": "INFORMATION",
                 "domain": "GENERAL", 
                 "keywords": [],
                 "confidence": 5,
-                "reasoning": "Fallback due to analysis error"
+                "reasoning": "Fallback due to JSON parsing error"
+            }
+        except Exception as e:
+            logger.error(f"AI analysis failed: {str(e)}")
+            print(f"❌ DEBUG: AI analysis error: {str(e)}")
+            return {
+                "intent": "INFORMATION",
+                "domain": "GENERAL", 
+                "keywords": [],
+                "confidence": 5,
+                "reasoning": f"Fallback due to analysis error: {str(e)}"
             }
     
     def calculate_keyword_score(self, query: str, agent_type: AgentType) -> Tuple[float, List[str]]:
@@ -274,19 +304,42 @@ class IntelligentSupervisor:
             for agent_type in AgentType:
                 base_score = agent_scores[agent_type]
                 
-                # AI domain boost
+                # AI domain boost (very strong signal)
                 if ai_analysis['domain'] == agent_type.value.upper():
-                    base_score += 5.0
+                    ai_boost = 10.0  # Increased from 5.0
+                    base_score += ai_boost
+                    print(f"🧠 DEBUG: AI boost +{ai_boost} for {agent_type.value} (domain match)")
                 
-                # Context boost
-                if agent_type == AgentType.EXHIBITORS and context_scores.get('commercial', 0) > 0:
-                    base_score += context_scores['commercial'] * 1.5
-                elif agent_type == AgentType.VISITORS and context_scores.get('demographic', 0) > 0:
-                    base_score += context_scores['demographic'] * 1.5
-                elif agent_type == AgentType.GENERAL and context_scores.get('informational', 0) > 0:
-                    base_score += context_scores['informational'] * 1.2
+                # AI confidence boost
+                ai_confidence = ai_analysis.get('confidence', 5)
+                if ai_analysis['domain'] == agent_type.value.upper():
+                    confidence_boost = (ai_confidence / 10.0) * 3.0  # Scale AI confidence
+                    base_score += confidence_boost
+                    print(f"🧠 DEBUG: Confidence boost +{confidence_boost:.1f} for {agent_type.value}")
+                
+                # Context boost (refined)
+                if agent_type == AgentType.EXHIBITORS:
+                    commercial_boost = context_scores.get('commercial', 0) * 2.0
+                    data_boost = context_scores.get('data_extraction', 0) * 1.0
+                    base_score += commercial_boost + data_boost
+                    if commercial_boost > 0 or data_boost > 0:
+                        print(f"🧠 DEBUG: Context boost +{commercial_boost + data_boost:.1f} for {agent_type.value}")
+                        
+                elif agent_type == AgentType.VISITORS:
+                    demographic_boost = context_scores.get('demographic', 0) * 2.0
+                    data_boost = context_scores.get('data_extraction', 0) * 1.0
+                    base_score += demographic_boost + data_boost
+                    if demographic_boost > 0 or data_boost > 0:
+                        print(f"🧠 DEBUG: Context boost +{demographic_boost + data_boost:.1f} for {agent_type.value}")
+                        
+                elif agent_type == AgentType.GENERAL:
+                    info_boost = context_scores.get('informational', 0) * 1.5
+                    base_score += info_boost
+                    if info_boost > 0:
+                        print(f"🧠 DEBUG: Context boost +{info_boost:.1f} for {agent_type.value}")
                 
                 final_scores[agent_type] = base_score
+                print(f"🧠 DEBUG: Final score for {agent_type.value}: {base_score:.1f}")
             
             # Step 5: Select best agent
             best_agent = max(final_scores.items(), key=lambda x: x[1])
@@ -297,13 +350,15 @@ class IntelligentSupervisor:
             total_possible_score = max(10.0, max_score + 5.0)  # Avoid division by zero
             confidence = min(1.0, max_score / total_possible_score)
             
-            # Handle low confidence - default to general agent
-            if confidence < 0.3 or max_score < 2.0:
+            # Handle low confidence - but be less conservative
+            if confidence < 0.2 or max_score < 1.0:
                 selected_agent = AgentType.GENERAL
-                confidence = 0.7  # Medium confidence for general fallback
-                reasoning = f"Low confidence in specialized routing (max_score: {max_score:.1f}), defaulting to general agent for comprehensive response"
+                confidence = 0.6  # Medium confidence for general fallback
+                reasoning = f"Very low confidence in specialized routing (max_score: {max_score:.1f}), defaulting to general agent for comprehensive response"
+                print(f"🧠 DEBUG: Low confidence fallback to general agent")
             else:
-                reasoning = f"Selected {selected_agent.value} agent based on AI analysis (domain: {ai_analysis['domain']}) and keyword matching (score: {max_score:.1f})"
+                reasoning = f"Selected {selected_agent.value} agent based on AI analysis (domain: {ai_analysis['domain']}) and combined scoring (final score: {max_score:.1f})"
+                print(f"🧠 DEBUG: Selected {selected_agent.value} with confidence {confidence:.2f}")
             
             decision = RoutingDecision(
                 selected_agent=selected_agent,
