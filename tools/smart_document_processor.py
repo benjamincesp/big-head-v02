@@ -5,7 +5,6 @@ Enhanced document reading with intelligent chunking and fallback mechanisms
 
 import os
 import logging
-import PyPDF2
 import pandas as pd
 import json
 import hashlib
@@ -13,6 +12,19 @@ import re
 from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime
 import traceback
+
+# PDF processing imports - prefer PyMuPDF for better text extraction
+try:
+    import fitz  # PyMuPDF
+    PYMUPDF_AVAILABLE = True
+except ImportError:
+    PYMUPDF_AVAILABLE = False
+
+try:
+    import PyPDF2
+    PYPDF2_AVAILABLE = True
+except ImportError:
+    PYPDF2_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -51,38 +63,80 @@ class SmartDocumentProcessor:
         return sorted(files)
     
     def extract_text_from_pdf(self, file_path: str) -> str:
-        """Extract text from PDF with multiple fallback methods"""
+        """Extract text from PDF with multiple fallback methods - PyMuPDF preferred"""
+        text = ""
+        extraction_method = ""
+        
+        print(f"📄 DEBUG: Processing PDF: {os.path.basename(file_path)}")
+        
+        # Method 1: Try PyMuPDF first (best results)
+        if PYMUPDF_AVAILABLE:
+            try:
+                print("🔧 DEBUG: Trying PyMuPDF extraction...")
+                text = self._extract_with_pymupdf(file_path)
+                if text.strip():
+                    extraction_method = "PyMuPDF"
+                    print(f"✅ DEBUG: PyMuPDF extracted {len(text)} characters")
+            except Exception as e:
+                print(f"⚠️ DEBUG: PyMuPDF failed: {str(e)}")
+        
+        # Method 2: Fallback to PyPDF2 if PyMuPDF failed or unavailable
+        if not text.strip() and PYPDF2_AVAILABLE:
+            try:
+                print("🔧 DEBUG: Trying PyPDF2 extraction...")
+                text = self._extract_with_pypdf2(file_path)
+                if text.strip():
+                    extraction_method = "PyPDF2"
+                    print(f"✅ DEBUG: PyPDF2 extracted {len(text)} characters")
+            except Exception as e:
+                print(f"⚠️ DEBUG: PyPDF2 failed: {str(e)}")
+        
+        # Clean and normalize text
+        if text.strip():
+            text = self._clean_text(text)
+            print(f"✅ DEBUG: Final extraction ({extraction_method}): {len(text)} characters")
+            return text
+        else:
+            print("⚠️ DEBUG: No text extracted from PDF with any method")
+            return f"Documento PDF: {os.path.basename(file_path)} (contenido no disponible para extracción de texto)"
+    
+    def _extract_with_pymupdf(self, file_path: str) -> str:
+        """Extract text using PyMuPDF (fitz)"""
         text = ""
         
-        try:
-            print(f"📄 DEBUG: Processing PDF: {os.path.basename(file_path)}")
-            
-            with open(file_path, 'rb') as file:
-                pdf_reader = PyPDF2.PdfReader(file)
+        doc = fitz.open(file_path)
+        
+        for page_num in range(doc.page_count):
+            try:
+                page = doc[page_num]
+                page_text = page.get_text()
                 
-                for page_num, page in enumerate(pdf_reader.pages):
-                    try:
-                        page_text = page.extract_text()
-                        if page_text.strip():
-                            text += f"\\n--- Página {page_num + 1} ---\\n{page_text}\\n"
-                    except Exception as e:
-                        logger.warning(f"Error extracting page {page_num + 1}: {str(e)}")
-                        continue
+                if page_text.strip():
+                    text += f"\\n--- Página {page_num + 1} ---\\n{page_text}\\n"
+            except Exception as e:
+                logger.warning(f"PyMuPDF: Error extracting page {page_num + 1}: {str(e)}")
+                continue
+        
+        doc.close()
+        return text
+    
+    def _extract_with_pypdf2(self, file_path: str) -> str:
+        """Extract text using PyPDF2 as fallback"""
+        text = ""
+        
+        with open(file_path, 'rb') as file:
+            pdf_reader = PyPDF2.PdfReader(file)
             
-            # Clean and normalize text
-            text = self._clean_text(text)
-            
-            if text.strip():
-                print(f"✅ DEBUG: Extracted {len(text)} characters from PDF")
-                return text
-            else:
-                print("⚠️ DEBUG: No text extracted from PDF")
-                return f"Documento PDF: {os.path.basename(file_path)} (contenido no disponible para extracción de texto)"
-                
-        except Exception as e:
-            logger.error(f"Error processing PDF {file_path}: {str(e)}")
-            print(f"❌ DEBUG: PDF processing failed: {str(e)}")
-            return f"Documento PDF: {os.path.basename(file_path)} (error al procesar: {str(e)})"
+            for page_num, page in enumerate(pdf_reader.pages):
+                try:
+                    page_text = page.extract_text()
+                    if page_text.strip():
+                        text += f"\\n--- Página {page_num + 1} ---\\n{page_text}\\n"
+                except Exception as e:
+                    logger.warning(f"PyPDF2: Error extracting page {page_num + 1}: {str(e)}")
+                    continue
+        
+        return text
     
     def extract_text_from_excel(self, file_path: str) -> str:
         """Extract text from Excel files"""
