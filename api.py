@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 # Import configuration and exceptions
 from config import config
 from exceptions import *
+from intelligent_supervisor import IntelligentSupervisor
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -55,6 +56,11 @@ try:
     orchestrator = FoodServiceOrchestrator(config.OPENAI_API_KEY, redis_config)
     print("✅ DEBUG: Orchestrator created successfully!")
     
+    # Initialize intelligent supervisor
+    print("🧠 DEBUG: Creating intelligent supervisor...")
+    supervisor = IntelligentSupervisor(config.OPENAI_API_KEY)
+    print("✅ DEBUG: Intelligent supervisor created successfully!")
+    
 except ConfigError as e:
     print(f"❌ DEBUG: Configuration error: {str(e)}")
     logger.error(f"Configuration error: {str(e)}")
@@ -81,6 +87,22 @@ class QueryRequest(BaseModel):
 
 class QueryResponse(BaseModel):
     response: str
+
+class SmartQueryRequest(BaseModel):
+    query: str = Field(
+        ..., 
+        description="Consulta del usuario", 
+        min_length=1, 
+        max_length=config.MAX_QUERY_LENGTH
+    )
+    use_cache: bool = Field(True, description="Usar cache para la consulta")
+    include_routing_info: bool = Field(False, description="Incluir información sobre la decisión de enrutamiento")
+
+class SmartQueryResponse(BaseModel):
+    response: str
+    agent_used: str
+    routing_confidence: float
+    routing_explanation: Optional[str] = None
 
 # API Endpoints
 
@@ -175,6 +197,51 @@ async def process_query(request: QueryRequest):
             detail=f"Error interno del servidor: {str(e)}"
         )
 
+@app.post("/smart-query", response_model=SmartQueryResponse)
+async def process_smart_query(request: SmartQueryRequest):
+    """
+    Procesar consulta usando el supervisor inteligente para selección automática de agente
+    
+    - **query**: La consulta del usuario sobre Food Service 2025
+    - **use_cache**: Si usar cache para la consulta (por defecto: true)  
+    - **include_routing_info**: Si incluir explicación del enrutamiento (por defecto: false)
+    """
+    try:
+        logger.info(f"Processing smart query: {request.query[:100]}...")
+        
+        # Step 1: Use intelligent supervisor to route the query
+        routing_decision = supervisor.route_query(request.query)
+        selected_agent = routing_decision.selected_agent.value
+        
+        logger.info(f"Smart routing selected: {selected_agent} (confidence: {routing_decision.confidence:.2f})")
+        
+        # Step 2: Process query with selected agent
+        result = orchestrator.process_query(
+            query=request.query,
+            agent_type=selected_agent,
+            use_cache=request.use_cache
+        )
+        
+        # Step 3: Prepare response
+        response = SmartQueryResponse(
+            response=result.get("response", ""),
+            agent_used=selected_agent,
+            routing_confidence=routing_decision.confidence
+        )
+        
+        # Include routing explanation if requested
+        if request.include_routing_info:
+            response.routing_explanation = supervisor.get_routing_explanation(routing_decision)
+        
+        return response
+        
+    except Exception as e:
+        logger.error(f"Error processing smart query: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error interno del servidor: {str(e)}"
+        )
+
 # Error handlers
 @app.exception_handler(404)
 async def not_found_handler(request, exc):
@@ -202,8 +269,12 @@ async def internal_error_handler(request, exc):
 # Startup event
 @app.on_event("startup")
 async def startup_event():
-    logger.info("🚀 Food Service 2025 API started - Single endpoint: POST /query")
+    logger.info("🚀 Food Service 2025 API started")
+    logger.info("📋 Available endpoints:")
+    logger.info("   • POST /query - Manual agent selection")
+    logger.info("   • POST /smart-query - Automatic agent selection with intelligent routing")
     logger.info(f"📊 Orchestrator initialized with {len(orchestrator.agents)} agents")
+    logger.info(f"🧠 Intelligent supervisor initialized with AI-powered routing")
     logger.info(f"💾 Redis connected: {orchestrator.redis_manager.is_connected()}")
 
 # Shutdown event
