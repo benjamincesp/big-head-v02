@@ -11,6 +11,7 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 from .enhanced_vector_store import EnhancedVectorStore
 from .smart_document_processor import SmartDocumentProcessor
+from .hybrid_search import HybridSearchEngine
 from openai_client import get_openai_client
 from exceptions import DocumentError, OpenAIError
 
@@ -38,6 +39,9 @@ class IntelligentSearchSystem:
         safe_folder_name = folder_path.replace('/', '_').replace('\\\\', '_')
         vector_store_path = f"vector_stores/{safe_folder_name}_enhanced"
         self.vector_store = EnhancedVectorStore(vector_store_path)
+        
+        # Hybrid search engine
+        self.hybrid_search = HybridSearchEngine()
         
         # State tracking
         self.last_folder_hash = None
@@ -157,7 +161,7 @@ class IntelligentSearchSystem:
     
     def search(self, query: str, max_results: int = 5) -> List[Dict[str, Any]]:
         """
-        Intelligent search that always returns relevant results
+        Hybrid intelligent search that combines vector and keyword approaches
         
         Args:
             query: Search query
@@ -169,28 +173,67 @@ class IntelligentSearchSystem:
         results = []
         
         try:
-            print(f"🔍 DEBUG: Intelligent search for: '{query[:50]}...'")
+            print(f"🔍 DEBUG: Hybrid intelligent search for: '{query[:50]}...'")
             
-            # Strategy 1: Vector search (primary)
+            # Strategy 1: Try vector search first
             vector_results = self._vector_search(query, max_results)
-            if vector_results:
-                results.extend(vector_results)
-                print(f"✅ DEBUG: Vector search found {len(vector_results)} results")
             
-            # Strategy 2: Keyword search (fallback)
-            if len(results) < max_results:
-                keyword_results = self._keyword_search(query, max_results - len(results))
-                results.extend(keyword_results)
-                if keyword_results:
-                    print(f"✅ DEBUG: Keyword search found {len(keyword_results)} additional results")
+            # Strategy 2: Use hybrid search enhancement
+            if hasattr(self.vector_store, 'documents') and self.vector_store.documents:
+                print(f"🔍 DEBUG: Applying hybrid search enhancement")
+                
+                # Get raw vector results in the format hybrid search expects
+                raw_vector_results = []
+                if vector_results:
+                    for result in vector_results:
+                        raw_vector_results.append((
+                            result.get('content', ''),
+                            result.get('score', 0.0),
+                            result.get('metadata', {})
+                        ))
+                
+                # Get all documents and metadata for hybrid search
+                documents = self.vector_store.documents
+                metadata = getattr(self.vector_store, 'metadata', [{}] * len(documents))
+                
+                # Apply hybrid search enhancement
+                hybrid_results = self.hybrid_search.enhance_search_results(
+                    raw_vector_results, documents, metadata, query
+                )
+                
+                # Convert hybrid results back to expected format
+                for hybrid_result in hybrid_results:
+                    results.append({
+                        'content': hybrid_result.content,
+                        'score': hybrid_result.score,
+                        'source': hybrid_result.source,
+                        'search_method': hybrid_result.search_method,
+                        'metadata': {'source': hybrid_result.source}
+                    })
+                
+                print(f"✅ DEBUG: Hybrid search found {len(results)} enhanced results")
             
-            # Strategy 3: Intelligent fallback (always has something)
+            # Strategy 3: Traditional fallbacks if hybrid didn't work
+            if not results:
+                print(f"🔍 DEBUG: Falling back to traditional vector search")
+                if vector_results:
+                    results.extend(vector_results)
+                    print(f"✅ DEBUG: Vector search found {len(vector_results)} results")
+                
+                # Keyword search fallback
+                if len(results) < max_results:
+                    keyword_results = self._keyword_search(query, max_results - len(results))
+                    results.extend(keyword_results)
+                    if keyword_results:
+                        print(f"✅ DEBUG: Keyword search found {len(keyword_results)} additional results")
+            
+            # Strategy 4: Intelligent fallback (always has something)
             if not results:
                 fallback_results = self._intelligent_fallback(query)
                 results.extend(fallback_results)
                 print(f"✅ DEBUG: Fallback provided {len(fallback_results)} results")
             
-            # Strategy 4: Ensure minimum content
+            # Strategy 5: Ensure minimum content
             if len(results) < 2:
                 additional_results = self._ensure_minimum_content(query, max_results - len(results))
                 results.extend(additional_results)
