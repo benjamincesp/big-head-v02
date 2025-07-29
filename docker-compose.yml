@@ -32,7 +32,7 @@ services:
       # OpenAI Configuration
       - OPENAI_API_KEY=${OPENAI_API_KEY}
 
-      # Redis Configuration
+      # Redis Configuration - using internal Redis
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=0

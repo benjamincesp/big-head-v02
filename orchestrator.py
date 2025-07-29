@@ -117,7 +117,7 @@ class FoodServiceOrchestrator:
             logger.info("No specific data extraction detected, using general agent")
             return 'general'
     
-    def process_query(self, query: str, agent_type: str = None, use_cache: bool = True) -> Dict[str, Any]:
+    def process_query(self, query: str, agent_type: str = None, use_cache: bool = True, conversation_history: list = None) -> Dict[str, Any]:
         """
         Process a query using the appropriate agent
         
@@ -125,6 +125,7 @@ class FoodServiceOrchestrator:
             query: User query
             agent_type: Specific agent type to use (optional)
             use_cache: Whether to use cache (default: True)
+            conversation_history: Previous conversation messages for context (optional)
             
         Returns:
             Response dictionary
@@ -147,7 +148,12 @@ class FoodServiceOrchestrator:
             
             # Process query with selected agent
             agent = self.agents[agent_type]
-            response = agent.process_query(query)
+            
+            # Check if agent supports conversation history
+            if conversation_history and hasattr(agent, 'process_query_with_history'):
+                response = agent.process_query_with_history(query, conversation_history)
+            else:
+                response = agent.process_query(query)
             
             # Add orchestrator metadata
             response.update({

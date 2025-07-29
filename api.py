@@ -5,15 +5,17 @@ Provides REST endpoints for interacting with the multi-agent system
 
 import logging
 import os
+import json
 from typing import Dict, Any, Optional
 from datetime import datetime
 
-from fastapi import FastAPI, HTTPException, Query, Path
+from fastapi import FastAPI, HTTPException, Query, Path, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from orchestrator import FoodServiceOrchestrator
+from websocket_handler import ChatWebSocketManager
 
 # Configure logging
 logging.basicConfig(
@@ -61,6 +63,11 @@ try:
     supervisor = IntelligentSupervisor(config.OPENAI_API_KEY)
     print("✅ DEBUG: Intelligent supervisor created successfully!")
     
+    # Initialize WebSocket chat manager
+    print("💬 DEBUG: Creating WebSocket chat manager...")
+    chat_manager = ChatWebSocketManager(orchestrator.redis_manager, orchestrator, supervisor)
+    print("✅ DEBUG: WebSocket chat manager created successfully!")
+    
 except ConfigError as e:
     print(f"❌ DEBUG: Configuration error: {str(e)}")
     logger.error(f"Configuration error: {str(e)}")
@@ -104,7 +111,149 @@ class SmartQueryResponse(BaseModel):
     routing_confidence: float
     routing_explanation: Optional[str] = None
 
+class ChatSessionRequest(BaseModel):
+    user_id: Optional[str] = Field(None, description="ID del usuario (opcional)")
+    agent_type: str = Field("general", description="Tipo de agente", pattern="^(general|exhibitors|visitors)$")
+
+class ChatSessionResponse(BaseModel):
+    session_id: str
+    user_id: str
+    agent_type: str
+    created_at: float
+
 # API Endpoints
+
+# WebSocket Chat Endpoint
+@app.websocket("/ws/chat")
+async def websocket_chat_endpoint(
+    websocket: WebSocket,
+    session_id: Optional[str] = Query(None, description="ID de sesión existente para reanudar"),
+    user_id: Optional[str] = Query(None, description="ID del usuario"),
+    agent_type: str = Query("general", description="Tipo de agente")
+):
+    """
+    WebSocket endpoint para chat en tiempo real con memoria persistente
+    
+    - **session_id**: ID de sesión existente para reanudar conversación (opcional)
+    - **user_id**: Identificador del usuario (opcional)
+    - **agent_type**: Tipo de agente (general, exhibitors, visitors)
+    """
+    await chat_manager.connect(websocket, session_id, user_id, agent_type)
+    
+    try:
+        while True:
+            # Receive message from client
+            data = await websocket.receive_text()
+            
+            try:
+                message = json.loads(data)
+                await chat_manager.handle_message(websocket, message)
+            except json.JSONDecodeError:
+                await websocket.send_json({
+                    "type": "error",
+                    "message": "Invalid JSON format"
+                })
+                
+    except WebSocketDisconnect:
+        await chat_manager.disconnect(websocket)
+
+# Chat Management REST Endpoints
+@app.post("/chat/session", response_model=ChatSessionResponse)
+async def create_chat_session(request: ChatSessionRequest):
+    """
+    Crear nueva sesión de chat
+    
+    - **user_id**: ID del usuario (opcional)
+    - **agent_type**: Tipo de agente para la sesión
+    """
+    try:
+        session_id = chat_manager.chat_memory.create_session(
+            user_id=request.user_id,
+            agent_type=request.agent_type
+        )
+        
+        if not session_id:
+            raise HTTPException(status_code=500, detail="Failed to create chat session")
+        
+        session_info = chat_manager.chat_memory.get_session_info(session_id)
+        
+        return ChatSessionResponse(
+            session_id=session_id,
+            user_id=session_info["user_id"],
+            agent_type=session_info["agent_type"],
+            created_at=session_info["created_at"]
+        )
+        
+    except Exception as e:
+        logger.error(f"Error creating chat session: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error creating session: {str(e)}")
+
+@app.get("/chat/session/{session_id}")
+async def get_chat_session(session_id: str = Path(..., description="ID de la sesión")):
+    """
+    Obtener información de sesión de chat
+    """
+    try:
+        session_info = chat_manager.chat_memory.get_session_info(session_id)
+        
+        if not session_info:
+            raise HTTPException(status_code=404, detail="Chat session not found")
+        
+        return session_info
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting chat session: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving session: {str(e)}")
+
+@app.get("/chat/session/{session_id}/messages")
+async def get_chat_messages(
+    session_id: str = Path(..., description="ID de la sesión"),
+    limit: Optional[int] = Query(None, description="Límite de mensajes", ge=1, le=100)
+):
+    """
+    Obtener mensajes de una sesión de chat
+    """
+    try:
+        messages = chat_manager.chat_memory.get_messages(session_id, limit)
+        return {"session_id": session_id, "messages": messages}
+        
+    except Exception as e:
+        logger.error(f"Error getting chat messages: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving messages: {str(e)}")
+
+@app.delete("/chat/session/{session_id}")
+async def close_chat_session(session_id: str = Path(..., description="ID de la sesión")):
+    """
+    Cerrar sesión de chat
+    """
+    try:
+        success = chat_manager.chat_memory.close_session(session_id)
+        
+        if success:
+            return {"message": "Chat session closed successfully", "session_id": session_id}
+        else:
+            raise HTTPException(status_code=404, detail="Chat session not found")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error closing chat session: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error closing session: {str(e)}")
+
+@app.get("/chat/stats")
+async def get_chat_stats():
+    """
+    Obtener estadísticas del sistema de chat
+    """
+    try:
+        stats = chat_manager.get_session_stats()
+        return stats
+        
+    except Exception as e:
+        logger.error(f"Error getting chat stats: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving stats: {str(e)}")
 
 @app.get("/food-service/health")
 async def health_check():
@@ -273,8 +422,15 @@ async def startup_event():
     logger.info("📋 Available endpoints:")
     logger.info("   • POST /query - Manual agent selection")
     logger.info("   • POST /smart-query - Automatic agent selection with intelligent routing")
+    logger.info("   • WebSocket /ws/chat - Real-time chat with conversation memory")
+    logger.info("   • POST /chat/session - Create new chat session")
+    logger.info("   • GET /chat/session/{id} - Get session info")
+    logger.info("   • GET /chat/session/{id}/messages - Get session messages")
+    logger.info("   • DELETE /chat/session/{id} - Close session")
+    logger.info("   • GET /chat/stats - Chat system statistics")
     logger.info(f"📊 Orchestrator initialized with {len(orchestrator.agents)} agents")
     logger.info(f"🧠 Intelligent supervisor initialized with AI-powered routing")
+    logger.info(f"💬 Chat memory system initialized with persistent Redis storage")
     logger.info(f"💾 Redis connected: {orchestrator.redis_manager.is_connected()}")
 
 # Shutdown event
