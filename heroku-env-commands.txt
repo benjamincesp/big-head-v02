@@ -1,0 +1,53 @@
+# Comandos para configurar variables de entorno en Heroku
+# Ejecuta estos comandos en tu terminal (uno por uno):
+
+# 1. OpenAI Configuration
+heroku config:set OPENAI_API_KEY=YOUR_OPENAI_API_KEY_HERE --app big-head
+
+heroku config:set OPENAI_TIMEOUT=30 --app big-head
+heroku config:set OPENAI_MAX_RETRIES=3 --app big-head
+heroku config:set OPENAI_MODEL=gpt-4o-mini --app big-head
+
+# 2. Redis Configuration
+# IMPORTANTE: Agrega el addon de Heroku Redis (recomendado)
+heroku addons:create heroku-redis:mini --app big-head
+# Esto configura automáticamente REDIS_URL
+
+# Si prefieres usar Redis externo, comenta la línea anterior y descomenta estas:
+# heroku config:set REDIS_HOST=tu-redis-host.com --app big-head
+# heroku config:set REDIS_PORT=6379 --app big-head  
+# heroku config:set REDIS_PASSWORD=tu-password --app big-head
+# heroku config:set REDIS_DB=0 --app big-head
+
+heroku config:set REDIS_SOCKET_TIMEOUT=15 --app big-head
+heroku config:set REDIS_CONNECT_TIMEOUT=5 --app big-head
+
+# 3. API Configuration
+heroku config:set HOST=0.0.0.0 --app big-head
+# PORT se configura automáticamente en Heroku, no lo configures manualmente
+heroku config:set ENVIRONMENT=production --app big-head
+
+# 4. Cache Configuration
+heroku config:set CACHE_TTL=3600 --app big-head
+heroku config:set CACHE_SIMILARITY_THRESHOLD=0.8 --app big-head
+
+# 5. Query Configuration
+heroku config:set MAX_QUERY_LENGTH=1000 --app big-head
+heroku config:set MAX_RESPONSE_TOKENS=500 --app big-head
+
+# 6. Logging
+heroku config:set LOG_LEVEL=INFO --app big-head
+
+# 7. Vector Store
+heroku config:set DISABLE_VECTOR_STORE=false --app big-head
+
+# 8. Security (actualizar con tu dominio de Heroku)
+heroku config:set ALLOWED_ORIGINS="https://big-head.herokuapp.com,http://localhost:5173,http://localhost:3000" --app big-head
+heroku config:set CORS_ALLOW_CREDENTIALS=true --app big-head
+heroku config:set RATE_LIMIT="30/minute" --app big-head
+
+# Para ver todas las variables configuradas:
+heroku config --app big-head
+
+# IMPORTANTE: Si usas Heroku Redis addon
+heroku addons:create heroku-redis:mini --app big-head

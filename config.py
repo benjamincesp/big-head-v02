@@ -30,10 +30,23 @@ class Config:
         self.OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
         
         # Redis Configuration
-        self.REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
-        self.REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
-        self.REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
-        self.REDIS_DB = int(os.getenv('REDIS_DB', 0))
+        # Handle Heroku Redis addon (REDIS_URL) or individual config vars
+        redis_url = os.getenv('REDIS_URL')
+        if redis_url:
+            # Parse Heroku Redis URL: redis://h:password@host:port
+            import urllib.parse
+            parsed = urllib.parse.urlparse(redis_url)
+            self.REDIS_HOST = parsed.hostname
+            self.REDIS_PORT = parsed.port or 6379
+            self.REDIS_PASSWORD = parsed.password
+            self.REDIS_DB = 0  # Heroku Redis uses DB 0
+        else:
+            # Use individual environment variables (for local development)
+            self.REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
+            self.REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
+            self.REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+            self.REDIS_DB = int(os.getenv('REDIS_DB', 0))
+        
         self.REDIS_SOCKET_TIMEOUT = int(os.getenv('REDIS_SOCKET_TIMEOUT', 10))
         self.REDIS_CONNECT_TIMEOUT = int(os.getenv('REDIS_CONNECT_TIMEOUT', 5))
         
