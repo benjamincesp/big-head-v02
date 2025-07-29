@@ -1,5 +1,5 @@
 """
-Custom Exceptions for Food Service 2025 Multi-Agent System
+Custom Exceptions for Food Service 2025 Multi-Agent Systemxx
 Provides structured error handling for better debugging and user experience
 """
 
