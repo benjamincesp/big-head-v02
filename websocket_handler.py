@@ -202,19 +202,30 @@ class ChatWebSocketManager:
             
             # Always use intelligent supervisor to analyze and route the message
             try:
-                # Send typing indicator
-                await websocket.send_json({
+                # Send initial typing indicator
+                typing_data = {
                     "type": "typing",
-                    "message": "🧠 Analyzing your question and selecting the best agent..."
-                })
+                    "message": "🧠 Analyzing your question and selecting the best agent...",
+                    "is_typing": True
+                }
+                logger.info(f"Sending typing indicator: {typing_data}")
+                await websocket.send_json(typing_data)
                 
                 # Process with intelligent supervisor (automatic agent selection)
                 agent_response = await self._process_with_intelligent_supervisor(
+                    websocket,
                     user_message, 
                     conversation_history
                 )
                 
                 if agent_response:
+                    # Send "finishing up" typing indicator
+                    await websocket.send_json({
+                        "type": "typing",
+                        "message": "📝 Finalizing response...",
+                        "is_typing": True
+                    })
+                    
                     # Add assistant response to chat history
                     self.chat_memory.add_message(
                         session_id=session_id,
@@ -228,6 +239,13 @@ class ChatWebSocketManager:
                             "routing_explanation": agent_response.get("routing_explanation", "")
                         }
                     )
+                    
+                    # Stop typing indicator before sending response
+                    await websocket.send_json({
+                        "type": "typing",
+                        "message": "",
+                        "is_typing": False
+                    })
                     
                     # Send response to user
                     await websocket.send_json({
@@ -243,6 +261,12 @@ class ChatWebSocketManager:
                         }
                     })
                 else:
+                    # Stop typing indicator on error
+                    await websocket.send_json({
+                        "type": "typing",
+                        "message": "",
+                        "is_typing": False
+                    })
                     await websocket.send_json({
                         "type": "error",
                         "message": "Failed to process your message"
@@ -250,6 +274,12 @@ class ChatWebSocketManager:
                     
             except Exception as e:
                 logger.error(f"Error processing message with agent: {str(e)}")
+                # Stop typing indicator on error
+                await websocket.send_json({
+                    "type": "typing",
+                    "message": "",
+                    "is_typing": False
+                })
                 await websocket.send_json({
                     "type": "error",
                     "message": "Error processing your message"
@@ -262,11 +292,12 @@ class ChatWebSocketManager:
                 "message": "Message handling failed"
             })
     
-    async def _process_with_intelligent_supervisor(self, message: str, conversation_history: list) -> Dict[str, Any]:
+    async def _process_with_intelligent_supervisor(self, websocket: WebSocket, message: str, conversation_history: list) -> Dict[str, Any]:
         """
         Process message with intelligent supervisor for automatic agent selection
         
         Args:
+            websocket: WebSocket connection for sending typing updates
             message: User message
             conversation_history: Previous conversation messages
             
@@ -277,6 +308,12 @@ class ChatWebSocketManager:
             start_time = time.time()
             
             # Step 1: Use intelligent supervisor to route the query
+            await websocket.send_json({
+                "type": "typing",
+                "message": "🎯 Selecting best agent for your question...",
+                "is_typing": True
+            })
+            
             routing_decision = await asyncio.to_thread(
                 self.supervisor.route_query,
                 message
@@ -285,7 +322,22 @@ class ChatWebSocketManager:
             
             logger.info(f"WebSocket smart routing selected: {selected_agent} (confidence: {routing_decision.confidence:.2f})")
             
-            # Step 2: Process query with selected agent and conversation history
+            # Step 2: Send agent-specific typing indicator
+            agent_names = {
+                "general": "🤖 General Assistant",
+                "exhibitors": "🏢 Exhibitors Specialist", 
+                "visitors": "👥 Visitors Specialist"
+            }
+            agent_display = agent_names.get(selected_agent, selected_agent)
+            
+            await websocket.send_json({
+                "type": "typing",
+                "message": f"✨ {agent_display} is preparing your response...",
+                "is_typing": True,
+                "agent_selected": selected_agent
+            })
+            
+            # Step 3: Process query with selected agent and conversation history
             result = await asyncio.to_thread(
                 self.orchestrator.process_query,
                 message,
