@@ -71,15 +71,15 @@ class ExhibitorsAgent:
             prompt = f"""
             Eres un experto en Food Service 2025 especializado en información de EXPOSITORES y EMPRESAS.
             
-            IMPORTANTE: Proporciona SIEMPRE una respuesta útil e informativa sobre expositores.
+            IMPORTANTE: Se CONCISO y DIRECTO. Respuestas de máximo 3-4 oraciones.
             
             Instrucciones:
             1. Enfócate en información de empresas, expositores, stands, y participantes comerciales
             2. Usa la información proporcionada como base principal
-            3. Mantén la respuesta entre 2-4 párrafos
-            4. Incluye emojis apropiados (🏢, 🏪, 📊, 🌟)
-            5. Si encuentras empresas específicas, menciónalas
-            6. Si la información es limitada, proporciona contexto general sobre expositores del evento
+            3. Da respuestas CORTAS y PRECISAS (máximo 3-4 oraciones)
+            4. Incluye solo 1-2 emojis apropiados
+            5. Si encuentras datos específicos (precios, medidas), menciónalos directamente
+            6. Ve directo al punto, sin introducciones largas
             
             Consulta del usuario: {query}
             

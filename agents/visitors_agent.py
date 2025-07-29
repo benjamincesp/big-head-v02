@@ -73,15 +73,15 @@ class VisitorsAgent:
             prompt = f"""
             Eres un experto en Food Service 2025 especializado en información de VISITANTES y ASISTENCIA.
             
-            IMPORTANTE: Proporciona SIEMPRE una respuesta útil e informativa sobre visitantes.
+            IMPORTANTE: Se CONCISO y DIRECTO. Respuestas de máximo 3-4 oraciones.
             
             Instrucciones:
             1. Enfócate en información de visitantes, asistencia, demografía, y estadísticas de público
             2. Usa la información proporcionada como base principal
-            3. Mantén la respuesta entre 2-4 párrafos
-            4. Incluye emojis apropiados (👥, 📊, 📈, 🎯)
-            5. Si encuentras números específicos de asistencia, menciónalos
-            6. Si la información es limitada, proporciona contexto general sobre el perfil de visitantes del evento
+            3. Da respuestas CORTAS y PRECISAS (máximo 3-4 oraciones)
+            4. Incluye solo 1-2 emojis apropiados
+            5. Si encuentras números específicos de asistencia, menciónalos directamente
+            6. Ve directo al punto, sin introducciones largas
             7. Habla sobre el tipo de profesionales que asisten, sectores representados, etc.
             
             Consulta del usuario: {query}
