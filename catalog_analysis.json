@@ -1,0 +1,866 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "methods": {
+        "standard": {
+          "length": 94,
+          "text": "CATALO GO\nM O BILIARIO  \nFERIAS Y CO N GRES O S\nFURN ITURE CATALO G\nFAIRS AN D CO N GRES S ES\n"
+        },
+        "layout": {
+          "length": 94,
+          "text": "CATALO GO\nM O BILIARIO  \nFERIAS Y CO N GRES O S\nFURN ITURE CATALO G\nFAIRS AN D CO N GRES S ES\n"
+        },
+        "dict": {
+          "length": 91,
+          "text": "CATALO GO\nM O BILIARIO\nFERIAS Y CO N GRES O S\nFURN ITURE CATALO G\nFAIRS AN D CO N GRES S ES",
+          "structure": {
+            "blocks": 8,
+            "fonts_used": [
+              "Trebuchet MS"
+            ],
+            "font_sizes": [
+              24.0
+            ]
+          }
+        },
+        "blocks": {
+          "length": 93,
+          "text": "CATALO GO\nM O BILIARIO  \nFERIAS Y CO N GRES O S\nFURN ITURE CATALO G\nFAIRS AN D CO N GRES S ES",
+          "block_count": 2
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "CATALO GO\nM O BILIARIO  \nFERIAS Y CO N GRES O S\nFURN ITURE CATALO G\nFAIRS AN D CO N GRES S ES"
+        ],
+        "prices": [],
+        "measurements": [],
+        "colors": []
+      }
+    },
+    {
+      "page_number": 2,
+      "methods": {
+        "standard": {
+          "length": 1082,
+          "text": "1.REPISAS/SHELVES\nMedidas /Measures:\n2.Unidades 100 x 30 x H:15 cm  Color\nDisponible /Available Colour  \nBlanco /White\n0.76 UF + IVA\n05 MESAMODULACIÓN/ TABLE\n06 MESAALTA/PEDESTALTABLE\n02 GABETERO/LOCKABLE\nMedidas /Measures:\n100 x 55 x H:75 cm\nColor Disponible /Available Colour\nBlanco /White\n1.1 UF + IVA\nUS$4 + IVA\nUS$24 + IVA\nMedidas/Measures:\n70 x 70 x H:74 cm\nColor Disponible /Available Colour\nBlanco /White\n0.79 UF + IVA\nMedidas/Measures:\nBlanco /White  \n1 UF + IVA\n07 TABURETEALTO/STOOL\nMedidas/Measures:\n70 x 70 x H:110 cm\n50 x 50 x H:100 cm\nBlanco /White\n0.88 UF + IVA\nMedidas/Measures:\nUS$23 + IVA\n08 PORTAFOLLETO/BROCHURE RACK\n26 x 35 x H:149 cm\nColor Disponible /Available Colour ColorDisponible /Available Colour\nColor Disponible /Available Colour\nUS$6 + IVA\nUS$29 + IVA\nUS$29 + IVA\n03 PAPELERO/WASTE BASKET\nMedidas /Measures:\n29 x 31 x H:32cm\nColor Disponible /Available Colour\nNegro /Black\n0.15 UF + IVA\n04 SILLAMODULACIÓN/ BLACK CHAIR\nMedidas /Measures:\n45 x 45 x H:85cm\nColor Disponible /Available Colour\nNegro /Black\n0.75 UF + IVA\nAluminio /Aluminum\n0.75 UF + IVA\n"
+        },
+        "layout": {
+          "length": 1082,
+          "text": "1.REPISAS/SHELVES\nMedidas /Measures:\n2.Unidades 100 x 30 x H:15 cm  Color\nDisponible /Available Colour  \nBlanco /White\n0.76 UF + IVA\n05 MESAMODULACIÓN/ TABLE\n06 MESAALTA/PEDESTALTABLE\n02 GABETERO/LOCKABLE\nMedidas /Measures:\n100 x 55 x H:75 cm\nColor Disponible /Available Colour\nBlanco /White\n1.1 UF + IVA\nUS$4 + IVA\nUS$24 + IVA\nMedidas/Measures:\n70 x 70 x H:74 cm\nColor Disponible /Available Colour\nBlanco /White\n0.79 UF + IVA\nMedidas/Measures:\nBlanco /White  \n1 UF + IVA\n07 TABURETEALTO/STOOL\nMedidas/Measures:\n70 x 70 x H:110 cm\n50 x 50 x H:100 cm\nBlanco /White\n0.88 UF + IVA\nMedidas/Measures:\nUS$23 + IVA\n08 PORTAFOLLETO/BROCHURE RACK\n26 x 35 x H:149 cm\nColor Disponible /Available Colour ColorDisponible /Available Colour\nColor Disponible /Available Colour\nUS$6 + IVA\nUS$29 + IVA\nUS$29 + IVA\n03 PAPELERO/WASTE BASKET\nMedidas /Measures:\n29 x 31 x H:32cm\nColor Disponible /Available Colour\nNegro /Black\n0.15 UF + IVA\n04 SILLAMODULACIÓN/ BLACK CHAIR\nMedidas /Measures:\n45 x 45 x H:85cm\nColor Disponible /Available Colour\nNegro /Black\n0.75 UF + IVA\nAluminio /Aluminum\n0.75 UF + IVA\n"
+        },
+        "dict": {
+          "length": 1077,
+          "text": "1.REPISAS/SHELVES\nMedidas /Measures:\n2.Unidades 100 x 30 x H:15 cm  Color\nDisponible /Available Colour\nBlanco /White\n0.76 UF + IVA\n05 MESAMODULACIÓN/ TABLE\n06 MESAALTA/PEDESTALTABLE\n02 GABETERO/LOCKABLE\nMedidas /Measures:\n100 x 55 x H:75 cm\nColor Disponible /Available Colour\nBlanco /White\n1.1 UF + IVA\nUS$4 + IVA\nUS$24 + IVA\nMedidas/Measures:\n70 x 70 x H:74 cm\nColor Disponible /Available Colour\nBlanco /White\n0.79 UF + IVA\nMedidas/Measures:\nBlanco /White\n1 UF + IVA\n07 TABURETEALTO/STOOL\nMedidas/Measures:\n70 x 70 x H:110 cm\n50 x 50 x H:100 cm\nBlanco /White\n0.88 UF + IVA\nMedidas/Measures:\nUS$23 + IVA\n08 PORTAFOLLETO/BROCHURE RACK\n26 x 35 x H:149 cm\nColor Disponible /Available Colour ColorDisponible /Available Colour\nColor Disponible /Available Colour\nUS$6 + IVA\nUS$29 + IVA\nUS$29 + IVA\n03 PAPELERO/WASTE BASKET\nMedidas /Measures:\n29 x 31 x H:32cm\nColor Disponible /Available Colour\nNegro /Black\n0.15 UF + IVA\n04 SILLAMODULACIÓN/ BLACK CHAIR\nMedidas /Measures:\n45 x 45 x H:85cm\nColor Disponible /Available Colour\nNegro /Black\n0.75 UF + IVA\nAluminio /Aluminum\n0.75 UF + IVA",
+          "structure": {
+            "blocks": 32,
+            "fonts_used": [
+              "Tahoma,Bold",
+              "Trebuchet MS",
+              "Arial,Bold"
+            ],
+            "font_sizes": [
+              8.5,
+              9.0,
+              11.0,
+              16.4
+            ]
+          }
+        },
+        "blocks": {
+          "length": 1081,
+          "text": "1.REPISAS/SHELVES\nMedidas /Measures:\n2.Unidades 100 x 30 x H:15 cm  Color\nDisponible /Available Colour  \nBlanco /White\n0.76 UF + IVA\n05 MESAMODULACIÓN/ TABLE\n06 MESAALTA/PEDESTALTABLE\n02 GABETERO/LOCKABLE\nMedidas /Measures:\n100 x 55 x H:75 cm\nColor Disponible /Available Colour\nBlanco /White\n1.1 UF + IVA\nUS$4 + IVA\nUS$24 + IVA\nMedidas/Measures:\n70 x 70 x H:74 cm\nColor Disponible /Available Colour\nBlanco /White\n0.79 UF + IVA\nMedidas/Measures:\nBlanco /White  \n1 UF + IVA\n07 TABURETEALTO/STOOL\nMedidas/Measures:\n70 x 70 x H:110 cm\n50 x 50 x H:100 cm\nBlanco /White\n0.88 UF + IVA\nMedidas/Measures:\nUS$23 + IVA\n08 PORTAFOLLETO/BROCHURE RACK\n26 x 35 x H:149 cm\nColor Disponible /Available Colour ColorDisponible /Available Colour\nColor Disponible /Available Colour\nUS$6 + IVA\nUS$29 + IVA\nUS$29 + IVA\n03 PAPELERO/WASTE BASKET\nMedidas /Measures:\n29 x 31 x H:32cm\nColor Disponible /Available Colour\nNegro /Black\n0.15 UF + IVA\n04 SILLAMODULACIÓN/ BLACK CHAIR\nMedidas /Measures:\n45 x 45 x H:85cm\nColor Disponible /Available Colour\nNegro /Black\n0.75 UF + IVA\nAluminio /Aluminum\n0.75 UF + IVA",
+          "block_count": 20
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "1",
+          "REPISAS",
+          "Measures",
+          "2",
+          "Unidades 100 x 30 x H",
+          "15 cm  Color\nDisponible",
+          "White\n0",
+          "76 UF",
+          "IVA\n05 MESAMODULACIÓN",
+          "06 MESAALTA",
+          "02 GABETERO",
+          "Measures",
+          "100 x 55 x H",
+          "75 cm\nColor Disponible",
+          "White\n1",
+          "1 UF",
+          "IVA\nUS",
+          "4",
+          "IVA\nUS",
+          "24",
+          "IVA\nMedidas",
+          "70 x 70 x H",
+          "74 cm\nColor Disponible",
+          "White\n0",
+          "79 UF",
+          "IVA\nMedidas",
+          "Blanco",
+          "1 UF",
+          "IVA\n07 TABURETEALTO",
+          "Measures",
+          "70 x 70 x H",
+          "110 cm\n50 x 50 x H",
+          "100 cm\nBlanco",
+          "0",
+          "88 UF",
+          "IVA\nMedidas",
+          "US",
+          "23",
+          "IVA\n08 PORTAFOLLETO",
+          "26 x 35 x H",
+          "149 cm\nColor Disponible",
+          "Available Colour\nColor Disponible",
+          "6",
+          "IVA\nUS",
+          "29",
+          "IVA\nUS",
+          "29",
+          "IVA\n03 PAPELERO",
+          "Measures",
+          "29 x 31 x H",
+          "32cm\nColor Disponible",
+          "Black\n0",
+          "15 UF",
+          "IVA\n04 SILLAMODULACIÓN",
+          "Measures",
+          "45 x 45 x H",
+          "85cm\nColor Disponible",
+          "Black\n0",
+          "75 UF",
+          "IVA\nAluminio",
+          "0",
+          "75 UF",
+          "IVA",
+          "1.REPISAS/SHELVES\nMedidas ",
+          "2.Unidades ",
+          "100 x ",
+          "30 x H",
+          "15 cm  Color\nDisponible /Available Colour  \nBlanco ",
+          "76 UF ",
+          "05 MESAMODULACI",
+          "06 MESAALTA/PEDESTALTABLE\n",
+          "02 GABETERO/LOCKABLE\nMedidas ",
+          "100 x ",
+          "55 x H",
+          "75 cm\nColor Disponible /Available Colour\nBlanco ",
+          "1 UF ",
+          "4 ",
+          "24 ",
+          "70 x ",
+          "70 x H",
+          "74 cm\nColor Disponible /Available Colour\nBlanco ",
+          "79 UF ",
+          "1 UF ",
+          "07 TABURETEALTO/STOOL\nMedidas",
+          "70 x ",
+          "70 x H",
+          "110 cm\n",
+          "50 x ",
+          "50 x H",
+          "100 cm\nBlanco /White\n",
+          "88 UF ",
+          "23 ",
+          "08 PORTAFOLLETO/BROCHURE RACK\n",
+          "26 x ",
+          "35 x H",
+          "149 cm\nColor Disponible /Available Colour ColorDisponible ",
+          "6 ",
+          "29 ",
+          "29 ",
+          "03 PAPELERO/WASTE BASKET\nMedidas ",
+          "29 x ",
+          "31 x H",
+          "32cm\nColor Disponible /Available Colour\nNegro ",
+          "15 UF ",
+          "04 SILLAMODULACI",
+          "45 x ",
+          "45 x H",
+          "85cm\nColor Disponible /Available Colour\nNegro ",
+          "75 UF ",
+          "75 UF "
+        ],
+        "prices": [
+          "0.76",
+          "1.1",
+          "0.79",
+          "1",
+          "0.88",
+          "0.15",
+          "0.75",
+          "0.75",
+          "4",
+          "24",
+          "23",
+          "6",
+          "29",
+          "29",
+          "4",
+          "24",
+          "23",
+          "6",
+          "29",
+          "29"
+        ],
+        "measurements": [
+          [
+            "100",
+            "30",
+            "15"
+          ],
+          [
+            "100",
+            "55",
+            "75"
+          ],
+          [
+            "70",
+            "70",
+            "74"
+          ],
+          [
+            "70",
+            "70",
+            "110"
+          ],
+          [
+            "50",
+            "50",
+            "100"
+          ],
+          [
+            "26",
+            "35",
+            "149"
+          ],
+          [
+            "29",
+            "31",
+            "32"
+          ],
+          [
+            "45",
+            "45",
+            "85"
+          ],
+          "2.Unidades 100 x 30 x H:15 cm  Color",
+          "100 x 55 x H:75 cm",
+          "70 x 70 x H:74 cm",
+          "Blanco /White  ",
+          "70 x 70 x H:110 cm",
+          "US$23 + IVA",
+          "29 x 31 x H:32cm",
+          "45 x 45 x H:85cm"
+        ],
+        "colors": [
+          "100 x 55 x H:75 cm",
+          "70 x 70 x H:74 cm",
+          "Blanco /White  ",
+          "29 x 31 x H:32cm",
+          "45 x 45 x H:85cm",
+          "Blanco",
+          "White",
+          "Blanco",
+          "White",
+          "Blanco",
+          "White",
+          "Blanco",
+          "White",
+          "Blanco",
+          "White",
+          "Negro",
+          "Black",
+          "BLACK",
+          "Negro",
+          "Black",
+          "Aluminio",
+          "Aluminum"
+        ]
+      }
+    },
+    {
+      "page_number": 3,
+      "methods": {
+        "standard": {
+          "length": 716,
+          "text": "SILLADISEÑO /MODERNCHAIR\n10\nMedidas/Measures:\n50 x 50 x H:80 cm\nColor Disponible/AvailableColour\nBlanco /White\n1.36 UF + IVA\n11 POLTRONA/ARMCHAIR\nMedidas/Measures:\n80 x 70 x H:80 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.5UF + IVA\n12 SILLAOFICINA/DESKCHAIR\nMedidas/Measures:\n60 x 60 x H:100 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.36 UF + IVA\n14 TABURETEALTO/STOOL\nMedidas/Measures:\n50 x 50 x H:100 cm\nColor Disponible/AvailableColour\nAluminio /Aluminum\n0.88 + IVA\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\n07FOCOTIPOPALA/SPOTLIGHT\nColor Disponible/AvailableColour\nAluminio /Aluminum\nUf 0,6 + IVA\nMedidas/Measures:50 \nx 50 x 200 cms.\nAluminio /Aluminum\n4.8UF + IVA\nVITRINA VERTICAL\n"
+        },
+        "layout": {
+          "length": 716,
+          "text": "SILLADISEÑO /MODERNCHAIR\n10\nMedidas/Measures:\n50 x 50 x H:80 cm\nColor Disponible/AvailableColour\nBlanco /White\n1.36 UF + IVA\n11 POLTRONA/ARMCHAIR\nMedidas/Measures:\n80 x 70 x H:80 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.5UF + IVA\n12 SILLAOFICINA/DESKCHAIR\nMedidas/Measures:\n60 x 60 x H:100 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.36 UF + IVA\n14 TABURETEALTO/STOOL\nMedidas/Measures:\n50 x 50 x H:100 cm\nColor Disponible/AvailableColour\nAluminio /Aluminum\n0.88 + IVA\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\n07FOCOTIPOPALA/SPOTLIGHT\nColor Disponible/AvailableColour\nAluminio /Aluminum\nUf 0,6 + IVA\nMedidas/Measures:50 \nx 50 x 200 cms.\nAluminio /Aluminum\n4.8UF + IVA\nVITRINA VERTICAL\n"
+        },
+        "dict": {
+          "length": 712,
+          "text": "SILLADISEÑO /MODERNCHAIR\n10\nMedidas/Measures:\n50 x 50 x H:80 cm\nColor Disponible/AvailableColour\nBlanco /White\n1.36 UF + IVA\n11 POLTRONA/ARMCHAIR\nMedidas/Measures:\n80 x 70 x H:80 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.5UF + IVA\n12 SILLAOFICINA/DESKCHAIR\nMedidas/Measures:\n60 x 60 x H:100 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.36 UF + IVA\n14 TABURETEALTO/STOOL\nMedidas/Measures:\n50 x 50 x H:100 cm\nColor Disponible/AvailableColour\nAluminio /Aluminum\n0.88 + IVA\nValorpor evento entre1a4días\nDisponibilidadsegúnstock\n07FOCOTIPOPALA/SPOTLIGHT\nColor Disponible/AvailableColour\nAluminio /Aluminum\nUf 0,6 + IVA\nMedidas/Measures:50\nx 50 x 200 cms.\nAluminio /Aluminum\n4.8UF + IVA\nVITRINA VERTICAL",
+          "structure": {
+            "blocks": 21,
+            "fonts_used": [
+              "Tahoma,Bold",
+              "Trebuchet MS",
+              "Arial,Bold"
+            ],
+            "font_sizes": [
+              8.0,
+              8.1,
+              9.0,
+              11.0,
+              11.1,
+              14.0
+            ]
+          }
+        },
+        "blocks": {
+          "length": 715,
+          "text": "SILLADISEÑO /MODERNCHAIR\n10\nMedidas/Measures:\n50 x 50 x H:80 cm\nColor Disponible/AvailableColour\nBlanco /White\n1.36 UF + IVA\n11 POLTRONA/ARMCHAIR\nMedidas/Measures:\n80 x 70 x H:80 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.5UF + IVA\n12 SILLAOFICINA/DESKCHAIR\nMedidas/Measures:\n60 x 60 x H:100 cm\nColor Disponible/AvailableColour\nNegro /Black\n1.36 UF + IVA\n14 TABURETEALTO/STOOL\nMedidas/Measures:\n50 x 50 x H:100 cm\nColor Disponible/AvailableColour\nAluminio /Aluminum\n0.88 + IVA\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\n07FOCOTIPOPALA/SPOTLIGHT\nColor Disponible/AvailableColour\nAluminio /Aluminum\nUf 0,6 + IVA\nMedidas/Measures:50 \nx 50 x 200 cms.\nAluminio /Aluminum\n4.8UF + IVA\nVITRINA VERTICAL",
+          "block_count": 11
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "SILLADISEÑO",
+          "10\nMedidas",
+          "50 x 50 x H",
+          "80 cm\nColor Disponible",
+          "White\n1",
+          "36 UF",
+          "IVA\n11 POLTRONA",
+          "Measures",
+          "80 x 70 x H",
+          "80 cm\nColor Disponible",
+          "Black\n1",
+          "5UF",
+          "IVA\n12 SILLAOFICINA",
+          "Measures",
+          "60 x 60 x H",
+          "100 cm\nColor Disponible",
+          "Black\n1",
+          "36 UF",
+          "IVA\n14 TABURETEALTO",
+          "Measures",
+          "50 x 50 x H",
+          "100 cm\nColor Disponible",
+          "Aluminum\n0",
+          "88",
+          "IVA\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\n07FOCOTIPOPALA",
+          "AvailableColour\nAluminio",
+          "0",
+          "6",
+          "IVA\nMedidas",
+          "50 \nx 50 x 200 cms",
+          "Aluminio",
+          "4",
+          "8UF",
+          "IVA\nVITRINA VERTICAL",
+          "10\nMedidas/Measures",
+          "50 x ",
+          "50 x H",
+          "80 cm\nColor Disponible/AvailableColour\nBlanco ",
+          "36 UF ",
+          "11 POLTRONA/ARMCHAIR\nMedidas",
+          "80 x ",
+          "70 x H",
+          "80 cm\nColor Disponible/AvailableColour\nNegro ",
+          "5UF ",
+          "12 SILLAOFICINA/DESKCHAIR\nMedidas",
+          "60 x ",
+          "60 x H",
+          "100 cm\nColor Disponible/AvailableColour\nNegro ",
+          "36 UF ",
+          "14 TABURETEALTO/STOOL\nMedidas",
+          "50 x ",
+          "50 x H",
+          "100 cm\nColor Disponible/AvailableColour\nAluminio ",
+          "88 ",
+          "1a",
+          "4d",
+          "07FOCOTIPOPALA/SPOTLIGHT\nColor Disponible",
+          "6 ",
+          "50 \nx ",
+          "50 x ",
+          "200 cms",
+          "8UF "
+        ],
+        "prices": [
+          "1.36",
+          "1.5",
+          "1.36",
+          "4.8",
+          "0.88",
+          "6"
+        ],
+        "measurements": [
+          [
+            "50",
+            "50",
+            "80"
+          ],
+          [
+            "80",
+            "70",
+            "80"
+          ],
+          [
+            "60",
+            "60",
+            "100"
+          ],
+          [
+            "50",
+            "50",
+            "100"
+          ],
+          [
+            "50",
+            "50",
+            "200"
+          ],
+          "50 x 50 x H:80 cm",
+          "80 x 70 x H:80 cm",
+          "60 x 60 x H:100 cm",
+          "50 x 50 x H:100 cm",
+          "50 "
+        ],
+        "colors": [
+          "80 x 70 x H:80 cm",
+          "60 x 60 x H:100 cm",
+          "50 x 50 x H:100 cm",
+          "50 ",
+          "Blanco",
+          "White",
+          "Negro",
+          "Black",
+          "Negro",
+          "Black",
+          "Aluminio",
+          "Aluminum",
+          "Aluminio",
+          "Aluminum",
+          "Aluminio",
+          "Aluminum"
+        ]
+      }
+    },
+    {
+      "page_number": 4,
+      "methods": {
+        "standard": {
+          "length": 277,
+          "text": "0,96 x h:2,38 mts for panel\nFOAMBOARD SOBRE\nPANEL / FOAMBOARD\nOVER PANEL\nMedidas/Measures:\nUS$175+IUS\n0,94 x h:2,36 mts for panel\n3.8UF+ IVA – U$ 154 + VAT\n0,94 x h:2,36 mts for panel\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.\n"
+        },
+        "layout": {
+          "length": 277,
+          "text": "0,96 x h:2,38 mts for panel\nFOAMBOARD SOBRE\nPANEL / FOAMBOARD\nOVER PANEL\nMedidas/Measures:\nUS$175+IUS\n0,94 x h:2,36 mts for panel\n3.8UF+ IVA – U$ 154 + VAT\n0,94 x h:2,36 mts for panel\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.\n"
+        },
+        "dict": {
+          "length": 274,
+          "text": "0,96 x h:2,38 mts for panel\nFOAMBOARD SOBRE\nPANEL / FOAMBOARD\nOVER PANEL\nMedidas/Measures:\nUS$175+IUS\n0,94 x h:2,36 mts for panel\n3.8UF+ IVA – U$ 154 + VAT\n0,94 x h:2,36 mts for panel\nValorpor evento entre1a4días\nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.",
+          "structure": {
+            "blocks": 14,
+            "fonts_used": [
+              "Tahoma,Bold",
+              "Trebuchet MS",
+              "Nirmala UI,Bold"
+            ],
+            "font_sizes": [
+              8.0,
+              10.6,
+              11.0,
+              11.1,
+              12.0
+            ]
+          }
+        },
+        "blocks": {
+          "length": 276,
+          "text": "0,96 x h:2,38 mts for panel\nFOAMBOARD SOBRE\nPANEL / FOAMBOARD\nOVER PANEL\nMedidas/Measures:\nUS$175+IUS\n0,94 x h:2,36 mts for panel\n3.8UF+ IVA – U$ 154 + VAT\n0,94 x h:2,36 mts for panel\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.",
+          "block_count": 7
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "0",
+          "96 x h",
+          "2",
+          "38 mts for panel\nFOAMBOARD SOBRE\nPANEL",
+          "Measures",
+          "US",
+          "175",
+          "IUS\n0",
+          "94 x h",
+          "2",
+          "36 mts for panel\n3",
+          "8UF",
+          "IVA",
+          "U",
+          "154",
+          "VAT\n0",
+          "94 x h",
+          "2",
+          "36 mts for panel\nValorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido",
+          "96 x h",
+          "38 mts for panel\nFOAMBOARD SOBRE\nPANEL / FOAMBOARD\nOVER PANEL\nMedidas",
+          "94 x h",
+          "36 mts for panel\n",
+          "8UF",
+          "154 ",
+          "94 x h",
+          "36 mts for panel\nValorpor evento entre",
+          "1a",
+          "4d"
+        ],
+        "prices": [
+          "3.8"
+        ],
+        "measurements": [
+          "US$175+IUS"
+        ],
+        "colors": []
+      }
+    },
+    {
+      "page_number": 5,
+      "methods": {
+        "standard": {
+          "length": 172,
+          "text": "Valorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.\nGRAFICA EN TELA PVC\nCON OJETILLO PERIMETRAL/ PRINTED  \nPVC, PERIMETER GROMMET.\n"
+        },
+        "layout": {
+          "length": 172,
+          "text": "Valorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.\nGRAFICA EN TELA PVC\nCON OJETILLO PERIMETRAL/ PRINTED  \nPVC, PERIMETER GROMMET.\n"
+        },
+        "dict": {
+          "length": 167,
+          "text": "Valorpor evento entre1a4días\nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.\nGRAFICA EN TELA PVC\nCON OJETILLO PERIMETRAL/ PRINTED\nPVC, PERIMETER GROMMET.",
+          "structure": {
+            "blocks": 15,
+            "fonts_used": [
+              "Tahoma,Bold",
+              "Nirmala UI,Bold"
+            ],
+            "font_sizes": [
+              8.0,
+              12.0
+            ]
+          }
+        },
+        "blocks": {
+          "length": 171,
+          "text": "Valorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido.\nGRAFICA EN TELA PVC\nCON OJETILLO PERIMETRAL/ PRINTED  \nPVC, PERIMETER GROMMET.",
+          "block_count": 3
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "Valorpor evento entre1a4días  \nDisponibilidadsegúnstock\nServicio dediseño gráficonoincluido",
+          "GRAFICA EN TELA PVC\nCON OJETILLO PERIMETRAL",
+          "PERIMETER GROMMET",
+          "1a",
+          "4d"
+        ],
+        "prices": [],
+        "measurements": [],
+        "colors": []
+      }
+    },
+    {
+      "page_number": 6,
+      "methods": {
+        "standard": {
+          "length": 490,
+          "text": "WIFI - Conexión inalámbrica de 5 a 10 Mbps \n1punto WiFi Conexión inalámbrica de 5 a 10 Mbps \nSirve para RRSS - Web - Correos.\n1 Punto WiFi Conexión inalámbrica de 5 a 10 Mbps para RRSS -\nWeb – Correos\nValor UF 4,4 + IVA por el periodo de la feria \nUS$ 195,8 + VAT\nTurnoGarzón\nServicio de garzón al stand en turnos de 8 horas\nValor: UF1,5 + IVA x turno\nUS$ 66,75 + VAT per turn\nTurnode Aseo\nServicio de aseo al stand en turnos de 8 horas\nValor: UF 1,9 + IVA x turno \nUS$ 84,5 + VAT per turn\n"
+        },
+        "layout": {
+          "length": 490,
+          "text": "WIFI - Conexión inalámbrica de 5 a 10 Mbps \n1punto WiFi Conexión inalámbrica de 5 a 10 Mbps \nSirve para RRSS - Web - Correos.\n1 Punto WiFi Conexión inalámbrica de 5 a 10 Mbps para RRSS -\nWeb – Correos\nValor UF 4,4 + IVA por el periodo de la feria \nUS$ 195,8 + VAT\nTurnoGarzón\nServicio de garzón al stand en turnos de 8 horas\nValor: UF1,5 + IVA x turno\nUS$ 66,75 + VAT per turn\nTurnode Aseo\nServicio de aseo al stand en turnos de 8 horas\nValor: UF 1,9 + IVA x turno \nUS$ 84,5 + VAT per turn\n"
+        },
+        "dict": {
+          "length": 485,
+          "text": "WIFI - Conexión inalámbrica de 5 a 10 Mbps\n1punto WiFi Conexión inalámbrica de 5 a 10 Mbps\nSirve para RRSS - Web - Correos.\n1 Punto WiFi Conexión inalámbrica de 5 a 10 Mbps para RRSS -\nWeb – Correos\nValor UF 4,4 + IVA por el periodo de la feria\nUS$ 195,8 + VAT\nTurnoGarzón\nServicio de garzón al stand en turnos de 8 horas\nValor: UF1,5 + IVA x turno\nUS$ 66,75 + VAT per turn\nTurnode Aseo\nServicio de aseo al stand en turnos de 8 horas\nValor: UF 1,9 + IVA x turno\nUS$ 84,5 + VAT per turn",
+          "structure": {
+            "blocks": 9,
+            "fonts_used": [
+              "Calibri",
+              "Calibri,Bold"
+            ],
+            "font_sizes": [
+              14.0,
+              14.1
+            ]
+          }
+        },
+        "blocks": {
+          "length": 489,
+          "text": "WIFI - Conexión inalámbrica de 5 a 10 Mbps \n1punto WiFi Conexión inalámbrica de 5 a 10 Mbps \nSirve para RRSS - Web - Correos.\n1 Punto WiFi Conexión inalámbrica de 5 a 10 Mbps para RRSS -\nWeb – Correos\nValor UF 4,4 + IVA por el periodo de la feria \nUS$ 195,8 + VAT\nTurnoGarzón\nServicio de garzón al stand en turnos de 8 horas\nValor: UF1,5 + IVA x turno\nUS$ 66,75 + VAT per turn\nTurnode Aseo\nServicio de aseo al stand en turnos de 8 horas\nValor: UF 1,9 + IVA x turno \nUS$ 84,5 + VAT per turn",
+          "block_count": 6
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "WIFI",
+          "Conexión inalámbrica de 5 a 10 Mbps \n1punto WiFi Conexión inalámbrica de 5 a 10 Mbps \nSirve para RRSS",
+          "Web",
+          "Correos",
+          "1 Punto WiFi Conexión inalámbrica de 5 a 10 Mbps para RRSS",
+          "Web",
+          "Correos\nValor UF 4",
+          "4",
+          "IVA por el periodo de la feria \nUS",
+          "195",
+          "8",
+          "VAT\nTurnoGarzón\nServicio de garzón al stand en turnos de 8 horas\nValor",
+          "UF1",
+          "5",
+          "IVA x turno\nUS",
+          "66",
+          "75",
+          "VAT per turn\nTurnode Aseo\nServicio de aseo al stand en turnos de 8 horas\nValor",
+          "UF 1",
+          "9",
+          "IVA x turno \nUS",
+          "84",
+          "5",
+          "VAT per turn",
+          "5 a ",
+          "10 Mbps \n",
+          "1punto WiFi Conexi",
+          "5 a ",
+          "10 Mbps \nSirve para RRSS ",
+          "1 Punto WiFi Conexi",
+          "5 a ",
+          "10 Mbps para RRSS ",
+          "4 ",
+          "8 ",
+          "8 horas\nValor",
+          "5 ",
+          "75 ",
+          "8 horas\nValor",
+          "9 ",
+          "5 "
+        ],
+        "prices": [
+          "4",
+          "5",
+          "9"
+        ],
+        "measurements": [],
+        "colors": []
+      }
+    },
+    {
+      "page_number": 7,
+      "methods": {
+        "standard": {
+          "length": 569,
+          "text": "ENERGIA MONOFASICA\nEnergía adicional monofásica solicitud hasta 3kw, pasado los 3 KW, \nse debe solicitar trifásica.\nValor: 1KW de energía monofásica UF 2,75 + IVA\nUS$ 122,4 + VAT x KW Additional\nENERGIA TRIFASICA\nA partir de 3KW\nPasados los 25KW, se considera proyecto especial de energía.\nValor: 1Kwde energía trifásica UF 3,85 + IVA\nUS$ 171,3 + VAT x Kw additional\nENLACE INTERNET\nEnlace 20 Mbps - 30 Mbps dedicado + IP Fija + NAT\nPermite instalar redes internas (Servicio sujeto a factibilidad\ntécnica)\nValor: UF 15 + IVA por el periodo de la feria \nUS$ 667,5 + VAT\n"
+        },
+        "layout": {
+          "length": 569,
+          "text": "ENERGIA MONOFASICA\nEnergía adicional monofásica solicitud hasta 3kw, pasado los 3 KW, \nse debe solicitar trifásica.\nValor: 1KW de energía monofásica UF 2,75 + IVA\nUS$ 122,4 + VAT x KW Additional\nENERGIA TRIFASICA\nA partir de 3KW\nPasados los 25KW, se considera proyecto especial de energía.\nValor: 1Kwde energía trifásica UF 3,85 + IVA\nUS$ 171,3 + VAT x Kw additional\nENLACE INTERNET\nEnlace 20 Mbps - 30 Mbps dedicado + IP Fija + NAT\nPermite instalar redes internas (Servicio sujeto a factibilidad\ntécnica)\nValor: UF 15 + IVA por el periodo de la feria \nUS$ 667,5 + VAT\n"
+        },
+        "dict": {
+          "length": 566,
+          "text": "ENERGIA MONOFASICA\nEnergía adicional monofásica solicitud hasta 3kw, pasado los 3 KW,\nse debe solicitar trifásica.\nValor: 1KW de energía monofásica UF 2,75 + IVA\nUS$ 122,4 + VAT x KW Additional\nENERGIA TRIFASICA\nA partir de 3KW\nPasados los 25KW, se considera proyecto especial de energía.\nValor: 1Kwde energía trifásica UF 3,85 + IVA\nUS$ 171,3 + VAT x Kw additional\nENLACE INTERNET\nEnlace 20 Mbps - 30 Mbps dedicado + IP Fija + NAT\nPermite instalar redes internas (Servicio sujeto a factibilidad\ntécnica)\nValor: UF 15 + IVA por el periodo de la feria\nUS$ 667,5 + VAT",
+          "structure": {
+            "blocks": 7,
+            "fonts_used": [
+              "Calibri",
+              "Calibri,Bold"
+            ],
+            "font_sizes": [
+              14.0,
+              14.1
+            ]
+          }
+        },
+        "blocks": {
+          "length": 568,
+          "text": "ENERGIA MONOFASICA\nEnergía adicional monofásica solicitud hasta 3kw, pasado los 3 KW, \nse debe solicitar trifásica.\nValor: 1KW de energía monofásica UF 2,75 + IVA\nUS$ 122,4 + VAT x KW Additional\nENERGIA TRIFASICA\nA partir de 3KW\nPasados los 25KW, se considera proyecto especial de energía.\nValor: 1Kwde energía trifásica UF 3,85 + IVA\nUS$ 171,3 + VAT x Kw additional\nENLACE INTERNET\nEnlace 20 Mbps - 30 Mbps dedicado + IP Fija + NAT\nPermite instalar redes internas (Servicio sujeto a factibilidad\ntécnica)\nValor: UF 15 + IVA por el periodo de la feria \nUS$ 667,5 + VAT",
+          "block_count": 4
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "ENERGIA MONOFASICA\nEnergía adicional monofásica solicitud hasta 3kw",
+          "pasado los 3 KW",
+          "se debe solicitar trifásica",
+          "Valor",
+          "1KW de energía monofásica UF 2",
+          "75",
+          "IVA\nUS",
+          "122",
+          "4",
+          "VAT x KW Additional\nENERGIA TRIFASICA\nA partir de 3KW\nPasados los 25KW",
+          "se considera proyecto especial de energía",
+          "Valor",
+          "1Kwde energía trifásica UF 3",
+          "85",
+          "IVA\nUS",
+          "171",
+          "3",
+          "VAT x Kw additional\nENLACE INTERNET\nEnlace 20 Mbps",
+          "30 Mbps dedicado",
+          "IP Fija",
+          "NAT\nPermite instalar redes internas",
+          "Servicio sujeto a factibilidad\ntécnica",
+          "Valor",
+          "UF 15",
+          "IVA por el periodo de la feria \nUS",
+          "667",
+          "5",
+          "VAT",
+          "3kw",
+          "3 KW",
+          "1KW de energ",
+          "75 ",
+          "4 ",
+          "3KW\nPasados los ",
+          "25KW",
+          "1Kwde energ",
+          "85 ",
+          "3 ",
+          "20 Mbps ",
+          "30 Mbps dedicado ",
+          "15 ",
+          "5 "
+        ],
+        "prices": [
+          "75",
+          "85",
+          "15"
+        ],
+        "measurements": [],
+        "colors": []
+      }
+    },
+    {
+      "page_number": 8,
+      "methods": {
+        "standard": {
+          "length": 849,
+          "text": "Punto de agua\nInstalación de cañerías llega solo a un punto \nexterior del stand, no incluye distribución al \ninterior de este. Todo requerimiento está sujeto a \nfactibilidad técnica.\nSe solicita enviar plano de planta indicando punto\nexterior para su entrega.\nValor: UF 12 + IVA por el periodo de la feria \nUS$ 493 + VAT\nPunto de desagüe\nInstalación de cañerías llega solo a un punto \nexterior del stand, no incluye distribución al \ninterior de este. Se solicita enviar plano de planta \nindicando punto exterior para su entrega. Todo \nrequerimiento está sujeto a factibilidad técnica. \nValor UF 6,4 + IVA por el periodo de la feria\nUS$ 263,11 + VAT\nLAVAMANOS PORTATIL\nDimensiones: Largo 500 mm. Alto 850mm.\nPeso: 25 Kilos\nSistema autónomo. Depositos de 10 litros situados en su interior,\nValor: 9,03 +IVA por el periodo de la feria \nUS$ 401,8 + VAT\n"
+        },
+        "layout": {
+          "length": 849,
+          "text": "Punto de agua\nInstalación de cañerías llega solo a un punto \nexterior del stand, no incluye distribución al \ninterior de este. Todo requerimiento está sujeto a \nfactibilidad técnica.\nSe solicita enviar plano de planta indicando punto\nexterior para su entrega.\nValor: UF 12 + IVA por el periodo de la feria \nUS$ 493 + VAT\nPunto de desagüe\nInstalación de cañerías llega solo a un punto \nexterior del stand, no incluye distribución al \ninterior de este. Se solicita enviar plano de planta \nindicando punto exterior para su entrega. Todo \nrequerimiento está sujeto a factibilidad técnica. \nValor UF 6,4 + IVA por el periodo de la feria\nUS$ 263,11 + VAT\nLAVAMANOS PORTATIL\nDimensiones: Largo 500 mm. Alto 850mm.\nPeso: 25 Kilos\nSistema autónomo. Depositos de 10 litros situados en su interior,\nValor: 9,03 +IVA por el periodo de la feria \nUS$ 401,8 + VAT\n"
+        },
+        "dict": {
+          "length": 838,
+          "text": "Punto de agua\nInstalación de cañerías llega solo a un punto\nexterior del stand, no incluye distribución al\ninterior de este. Todo requerimiento está sujeto a\nfactibilidad técnica.\nSe solicita enviar plano de planta indicando punto\nexterior para su entrega.\nValor: UF 12 + IVA por el periodo de la feria\nUS$ 493 + VAT\nPunto de desagüe\nInstalación de cañerías llega solo a un punto\nexterior del stand, no incluye distribución al\ninterior de este. Se solicita enviar plano de planta\nindicando punto exterior para su entrega. Todo\nrequerimiento está sujeto a factibilidad técnica.\nValor UF 6,4 + IVA por el periodo de la feria\nUS$ 263,11 + VAT\nLAVAMANOS PORTATIL\nDimensiones: Largo 500 mm. Alto 850mm.\nPeso: 25 Kilos\nSistema autónomo. Depositos de 10 litros situados en su interior,\nValor: 9,03 +IVA por el periodo de la feria\nUS$ 401,8 + VAT",
+          "structure": {
+            "blocks": 6,
+            "fonts_used": [
+              "Calibri",
+              "Calibri,Bold"
+            ],
+            "font_sizes": [
+              14.0,
+              14.1
+            ]
+          }
+        },
+        "blocks": {
+          "length": 848,
+          "text": "Punto de agua\nInstalación de cañerías llega solo a un punto \nexterior del stand, no incluye distribución al \ninterior de este. Todo requerimiento está sujeto a \nfactibilidad técnica.\nSe solicita enviar plano de planta indicando punto\nexterior para su entrega.\nValor: UF 12 + IVA por el periodo de la feria \nUS$ 493 + VAT\nPunto de desagüe\nInstalación de cañerías llega solo a un punto \nexterior del stand, no incluye distribución al \ninterior de este. Se solicita enviar plano de planta \nindicando punto exterior para su entrega. Todo \nrequerimiento está sujeto a factibilidad técnica. \nValor UF 6,4 + IVA por el periodo de la feria\nUS$ 263,11 + VAT\nLAVAMANOS PORTATIL\nDimensiones: Largo 500 mm. Alto 850mm.\nPeso: 25 Kilos\nSistema autónomo. Depositos de 10 litros situados en su interior,\nValor: 9,03 +IVA por el periodo de la feria \nUS$ 401,8 + VAT",
+          "block_count": 3
+        }
+      },
+      "best_method": "standard",
+      "content_analysis": {
+        "products": [
+          "Punto de agua\nInstalación de cañerías llega solo a un punto \nexterior del stand",
+          "no incluye distribución al \ninterior de este",
+          "Todo requerimiento está sujeto a \nfactibilidad técnica",
+          "Se solicita enviar plano de planta indicando punto\nexterior para su entrega",
+          "Valor",
+          "UF 12",
+          "IVA por el periodo de la feria \nUS",
+          "493",
+          "VAT\nPunto de desagüe\nInstalación de cañerías llega solo a un punto \nexterior del stand",
+          "no incluye distribución al \ninterior de este",
+          "Se solicita enviar plano de planta \nindicando punto exterior para su entrega",
+          "Todo \nrequerimiento está sujeto a factibilidad técnica",
+          "Valor UF 6",
+          "4",
+          "IVA por el periodo de la feria\nUS",
+          "263",
+          "11",
+          "VAT\nLAVAMANOS PORTATIL\nDimensiones",
+          "Largo 500 mm",
+          "Alto 850mm",
+          "Peso",
+          "25 Kilos\nSistema autónomo",
+          "Depositos de 10 litros situados en su interior",
+          "Valor",
+          "9",
+          "03",
+          "IVA por el periodo de la feria \nUS",
+          "401",
+          "8",
+          "VAT",
+          "12 ",
+          "493 ",
+          "4 ",
+          "11 ",
+          "500 mm",
+          "850mm",
+          "25 Kilos\nSistema aut",
+          "10 litros situados en su interior",
+          "03 ",
+          "8 "
+        ],
+        "prices": [
+          "12",
+          "4",
+          "03"
+        ],
+        "measurements": [],
+        "colors": []
+      }
+    },
+    {
+      "page_number": 9,
+      "methods": {
+        "standard": {
+          "length": 0,
+          "text": ""
+        },
+        "layout": {
+          "length": 0,
+          "text": ""
+        },
+        "dict": {
+          "length": 0,
+          "text": "",
+          "structure": {
+            "blocks": 7,
+            "fonts_used": [],
+            "font_sizes": []
+          }
+        },
+        "blocks": {
+          "length": 0,
+          "text": "",
+          "block_count": 0
+        }
+      },
+      "best_method": "standard"
+    }
+  ],
+  "text_extraction_methods": {},
+  "structured_content": {},
+  "issues_found": []
+}
